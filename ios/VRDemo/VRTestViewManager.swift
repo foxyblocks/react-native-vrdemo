@@ -1,5 +1,5 @@
 //
-//  VRTestViewManager.swift
+//  VRViewManager.swift
 //  VRDemo
 //
 //  Created by Christian Schlensker on 1/21/17.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-@objc(VRTestViewManager)
-class VRTestViewManager : RCTViewManager {
+@objc(VRViewManager)
+class VRViewManager : RCTViewManager {
   override func view() -> UIView! {
-    return VRTestView();
+    return VRView();
   }
 }

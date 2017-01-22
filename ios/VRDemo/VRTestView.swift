@@ -1,5 +1,5 @@
 //
-//  VRTestView.swift
+//  VRView.swift
 //  VRDemo
 //
 //  Created by Christian Schlensker on 1/21/17.
@@ -20,7 +20,7 @@ func radiansToDegrees(_ radians: Float) -> Float {
   return (180.0/Float(M_PI)) * radians
 }
 
-class VRTestView: UIView, SCNSceneRendererDelegate {
+class VRView: UIView, SCNSceneRendererDelegate {
   
   private var didSetupConstraints = false
   
@@ -86,32 +86,7 @@ class VRTestView: UIView, SCNSceneRendererDelegate {
     scene.rootNode.addChildNode(cameraYawNode!)
     leftSceneView.pointOfView = leftCameraNode
     rightSceneView.pointOfView = rightCameraNode
-    
-    
-    let sphere = SCNSphere(radius: 2)
-    let sphereNode = SCNNode(geometry: sphere)
-    sphereNode.eulerAngles = SCNVector3Make(0, 0, degreesToRadians(180.0))
-    scene.rootNode.addChildNode(sphereNode)
-    
-    // Create video
-    let urlString = "http://cdn2.vrideo.com/prod_videos/v1/QpFmQDI_1080p_full.mp4"
-    guard let url = URL(string: urlString) else {
-      fatalError("Failed to create URL")
-    }
-    let player = AVPlayer(url: url)
 
-    let videoSize = CGSize(width: 2160, height: 280)
-    
-    // Video node
-    let videoNode = SKVideoNode(avPlayer: player)
-    let spritescene = SKScene(size: videoSize)
-    videoNode.position = CGPoint(x: spritescene.size.width/2, y: spritescene.size.height/2)
-    videoNode.size = videoSize
-    spritescene.addChild(videoNode)
-    
-    // assign SKScene-embedded video to sphere geometry
-    sphere.firstMaterial?.diffuse.contents = spritescene
-    sphere.firstMaterial?.cullMode = SCNCullMode.front
     
     // Respond to user head movement
     motionManager = CMMotionManager()
@@ -121,6 +96,17 @@ class VRTestView: UIView, SCNSceneRendererDelegate {
     leftSceneView?.delegate = self
     leftSceneView.isPlaying = true
     rightSceneView.isPlaying = true
+    
+    
+    let urlString = "http://cdn2.vrideo.com/prod_videos/v1/QpFmQDI_1080p_full.mp4"
+    guard let url = URL(string: urlString) else {
+      fatalError("Failed to create URL")
+    }
+    let videoNode = VRVideo360(url: url)
+    
+    videoNode.player.play()
+    
+    scene.rootNode.addChildNode(videoNode.node)
     
 //    let hud = SKScene()
 //    
@@ -132,8 +118,7 @@ class VRTestView: UIView, SCNSceneRendererDelegate {
 //    
 //    rightSceneView.overlaySKScene = hud
     
-    
-    player.play()
+
     
     self.setNeedsLayout()
   }

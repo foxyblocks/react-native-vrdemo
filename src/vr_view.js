@@ -1,10 +1,10 @@
 import React,  { Component } from 'react';
 import { requireNativeComponent } from 'react-native';
 
-const VRTestViewNative = requireNativeComponent('VRTestView', VRTestView);
+const VRViewNative = requireNativeComponent('VRView', VRView);
 
-export default class VRTestView extends Component {
+export default class VRView extends Component {
   render() {
-    return <VRTestViewNative {...this.props} />
+    return <VRViewNative {...this.props} />
   }
 }

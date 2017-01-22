@@ -1,5 +1,5 @@
 //
-//  VRTestViewModule.m
+//  VRViewModule.m
 //  VRDemo
 //
 //  Created by Christian Schlensker on 1/21/17.
@@ -10,5 +10,5 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTViewManager.h>
 
-@interface RCT_EXTERN_MODULE(VRTestViewManager, RCTViewManager)
+@interface RCT_EXTERN_MODULE(VRViewManager, RCTViewManager)
 @end
