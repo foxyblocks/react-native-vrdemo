@@ -9,6 +9,16 @@
 
 #import <React/RCTBridgeModule.h>
 #import <React/RCTViewManager.h>
+#import "VRDemo-Swift.h"
 
-@interface RCT_EXTERN_MODULE(VRViewManager, RCTViewManager)
+
+@interface VRViewManager : RCTViewManager
+@end
+
+@implementation VRViewManager
+RCT_EXPORT_MODULE()
+
+- (UIView *) view {
+  return [[VRView alloc] init];
+}
 @end

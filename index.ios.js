@@ -12,7 +12,7 @@ import {
   View
 } from 'react-native';
 
-import VRView from './src/vr_view.js';
+import { VRView } from './src/vr';
 
 export default class VRDemo extends Component {
   render() {

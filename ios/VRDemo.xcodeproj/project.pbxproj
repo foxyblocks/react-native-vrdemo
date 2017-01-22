@@ -20,10 +20,10 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		3539C8291E354990004E45EC /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3539C8281E354990004E45EC /* CameraPreviewView.swift */; };
 		356446B41E3449C7004CDCCB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356446B31E3449C7004CDCCB /* AppDelegate.swift */; };
 		356446CF1E344CA6004CDCCB /* VRTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356446CE1E344CA6004CDCCB /* VRTestView.swift */; };
-		356446D11E3450F4004CDCCB /* VRTestViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356446D01E3450F4004CDCCB /* VRTestViewManager.swift */; };
-		356446D41E34517D004CDCCB /* VRTestViewModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 356446D31E34517D004CDCCB /* VRTestViewModule.m */; };
+		356446D41E34517D004CDCCB /* VRManagers.m in Sources */ = {isa = PBXBuildFile; fileRef = 356446D31E34517D004CDCCB /* VRManagers.m */; };
 		356446D61E348441004CDCCB /* VRVideo360.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356446D51E348441004CDCCB /* VRVideo360.swift */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
@@ -231,11 +231,11 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = VRDemo/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = VRDemo/Info.plist; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		3539C8281E354990004E45EC /* CameraPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		356446B21E3449C7004CDCCB /* VRDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VRDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 		356446B31E3449C7004CDCCB /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = VRDemo/AppDelegate.swift; sourceTree = "<group>"; };
 		356446CE1E344CA6004CDCCB /* VRTestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VRTestView.swift; path = VRDemo/VRTestView.swift; sourceTree = "<group>"; };
-		356446D01E3450F4004CDCCB /* VRTestViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VRTestViewManager.swift; path = VRDemo/VRTestViewManager.swift; sourceTree = "<group>"; };
-		356446D31E34517D004CDCCB /* VRTestViewModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRTestViewModule.m; path = VRDemo/VRTestViewModule.m; sourceTree = "<group>"; };
+		356446D31E34517D004CDCCB /* VRManagers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRManagers.m; path = VRDemo/VRManagers.m; sourceTree = "<group>"; };
 		356446D51E348441004CDCCB /* VRVideo360.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VRVideo360.swift; path = VRDemo/VRVideo360.swift; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
@@ -360,8 +360,8 @@
 				356446B21E3449C7004CDCCB /* VRDemo-Bridging-Header.h */,
 				356446CE1E344CA6004CDCCB /* VRTestView.swift */,
 				356446D51E348441004CDCCB /* VRVideo360.swift */,
-				356446D01E3450F4004CDCCB /* VRTestViewManager.swift */,
-				356446D31E34517D004CDCCB /* VRTestViewModule.m */,
+				356446D31E34517D004CDCCB /* VRManagers.m */,
+				3539C8281E354990004E45EC /* CameraPreviewView.swift */,
 			);
 			name = VRDemo;
 			sourceTree = "<group>";
@@ -800,9 +800,9 @@
 			files = (
 				356446CF1E344CA6004CDCCB /* VRTestView.swift in Sources */,
 				356446B41E3449C7004CDCCB /* AppDelegate.swift in Sources */,
-				356446D41E34517D004CDCCB /* VRTestViewModule.m in Sources */,
+				3539C8291E354990004E45EC /* CameraPreviewView.swift in Sources */,
+				356446D41E34517D004CDCCB /* VRManagers.m in Sources */,
 				356446D61E348441004CDCCB /* VRVideo360.swift in Sources */,
-				356446D11E3450F4004CDCCB /* VRTestViewManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

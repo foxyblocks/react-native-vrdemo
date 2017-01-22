@@ -108,18 +108,8 @@ class VRView: UIView, SCNSceneRendererDelegate {
     
     scene.rootNode.addChildNode(videoNode.node)
     
-//    let hud = SKScene()
-//    
-//    let box = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 5, height: 5))
-//    box.fillColor = UIColor.red
-//    hud.size = CGSize(width: 100, height:100)
-//    
-//    hud.addChild(box)
-//    
-//    rightSceneView.overlaySKScene = hud
     
 
-    
     self.setNeedsLayout()
   }
   
@@ -133,15 +123,6 @@ class VRView: UIView, SCNSceneRendererDelegate {
       cameraYawNode!.eulerAngles.y = Float(currentAttitude.yaw)
     }
   }
-  
-//  override func updateConstraints() {
-//    super.updateConstraints()
-//    
-//    if didSetupConstraints == false {
-//      setupConstraints()
-//    }
-//  }
-  
   override func layoutSubviews() {
     
     super.layoutSubviews()
@@ -151,21 +132,5 @@ class VRView: UIView, SCNSceneRendererDelegate {
     rightSceneView.frame = CGRect(x: frame.width / 2, y: 0, width: frame.width / 2, height: frame.height)
     
   }
-  
-//  private func setupConstraints() {
-//    
-//    // Add your constraints here
-//    let margins = superview!.layoutGuides
-//    
-//    
-//    leftSceneView.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
-//    leftSceneView.trailingAnchor.constraint(equalTo: margins.centerXAnchor).isActive = true
-//    leftSceneView.heightAnchor.constraint(equalTo: margins.heightAnchor).isActive = true
-//    
-//    rightSceneView.leadingAnchor.constraint(equalTo: leftSceneView.trailingAnchor).isActive = true
-//    rightSceneView.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
-//    rightSceneView.heightAnchor.constraint(equalTo: margins.heightAnchor).isActive = true
-//
-//  }
 
 }
