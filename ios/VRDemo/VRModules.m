@@ -91,6 +91,8 @@ RCT_EXPORT_MODULE()
 {
   return [[VRSphereView alloc] init];
 }
+
+RCT_EXPORT_VIEW_PROPERTY(radius, CGFloat)
 @end
 
 

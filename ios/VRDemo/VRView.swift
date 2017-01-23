@@ -70,11 +70,23 @@ class VRNodeView : UIView {
 }
 
 class VRSphereView : VRNodeView {
+  
+  private let ball = SCNSphere(radius: 0)
+  
+  var radius : CGFloat {
+    get {
+      return ball.radius
+    }
+    
+    set {
+      ball.radius = newValue
+    }
+  }
+  
   override init(frame: CGRect) {
     print("Sphere Added")
     super.init(frame: frame)
     
-    let ball = SCNSphere(radius: 1)
 //    let ballNode = SCNNode(geometry: ball)
     let material = SCNMaterial()
     material.diffuse.contents = UIColor.white
