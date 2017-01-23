@@ -20,6 +20,68 @@ func radiansToDegrees(_ radians: Float) -> Float {
   return (180.0/Float(M_PI)) * radians
 }
 
+class VRNodeView : UIView {
+  var node : SCNNode
+  
+  var position : SCNVector3 {
+    get {
+      return node.position
+    }
+    
+    set {
+      node.position = newValue;
+    }
+  }
+  
+  var rotation : SCNVector3 {
+    get {
+      return node.eulerAngles
+    }
+    
+    set {
+      node.eulerAngles = newValue;
+    }
+  }
+  
+  override init(frame: CGRect) {
+    self.node = SCNNode();
+    
+    let ball = SCNSphere(radius: 1)
+    let ballNode = SCNNode(geometry: ball)
+    ballNode.position = SCNVector3(x: 0.0, y: -7, z: 0)
+    let material = SCNMaterial()
+    material.diffuse.contents = UIColor.white
+    material.specular.contents = UIColor.white
+    material.shininess = 1.0
+    ball.materials = [ material ]
+    
+    node.addChildNode(ballNode)
+    super.init(frame: frame)
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  // MARK: React subviews
+  override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
+    if subview is VRNodeView {
+      self.node.addChildNode((subview as! VRNodeView).node)
+    } else {
+      
+    }
+    super.insertReactSubview(subview, at: atIndex)
+  }
+  
+  override func removeReactSubview(_ subview: UIView!) {
+    if subview is VRNodeView {
+      (subview as! VRNodeView).node.removeFromParentNode()
+    }
+    
+    super.removeReactSubview(subview)
+  }
+}
+
 class VRView: UIView, SCNSceneRendererDelegate {
   
   private var didSetupConstraints = false
@@ -31,6 +93,7 @@ class VRView: UIView, SCNSceneRendererDelegate {
   var cameraRollNode : SCNNode?
   var cameraPitchNode : SCNNode?
   var cameraYawNode : SCNNode?
+  var contentNode : SCNNode!
   
   
   required init?(coder aDecoder: NSCoder) {
@@ -47,8 +110,8 @@ class VRView: UIView, SCNSceneRendererDelegate {
     self.addSubview(leftSceneView)
     self.addSubview(rightSceneView)
     
-    leftSceneView.backgroundColor = UIColor.red
-    rightSceneView.backgroundColor = UIColor.blue
+    leftSceneView.backgroundColor = UIColor.black
+    rightSceneView.backgroundColor = UIColor.black
     
     // Create Scene
     let scene = SCNScene()
@@ -98,21 +161,36 @@ class VRView: UIView, SCNSceneRendererDelegate {
     rightSceneView.isPlaying = true
     
     
-    let urlString = "http://cdn2.vrideo.com/prod_videos/v1/QpFmQDI_1080p_full.mp4"
-    guard let url = URL(string: urlString) else {
-      fatalError("Failed to create URL")
-    }
-    let videoNode = VRVideo360(url: url)
+//    let urlString = "http://cdn2.vrideo.com/prod_videos/v1/QpFmQDI_1080p_full.mp4"
+//    guard let url = URL(string: urlString) else {
+//      fatalError("Failed to create URL")
+//    }
+//    let videoNode = VRVideo360(url: url)
+//    
+//    videoNode.player.play()
+//    
+//    scene.rootNode.addChildNode(videoNode.node)
     
-    videoNode.player.play()
+
     
-    scene.rootNode.addChildNode(videoNode.node)
+//    scene.rootNode.addChildNode(ballNode)
     
-    
+    contentNode = SCNNode()
+    scene.rootNode.addChildNode(contentNode)
 
     self.setNeedsLayout()
   }
   
+  
+//  - (void)insertReactSubview:(RCTTabBarItem *)subview atIndex:(NSInteger)atIndex
+//  {
+//  if (![subview isKindOfClass:[RCTTabBarItem class]]) {
+//  RCTLogError(@"subview should be of type RCTTabBarItem");
+//  return;
+//  }
+//  [super insertReactSubview:subview atIndex:atIndex];
+//  _tabsChanged = YES;
+//  }
   func renderer(_ aRenderer: SCNSceneRenderer, updateAtTime time: TimeInterval)
   {
     if let mm = motionManager, let motion = mm.deviceMotion {
@@ -123,6 +201,7 @@ class VRView: UIView, SCNSceneRendererDelegate {
       cameraYawNode!.eulerAngles.y = Float(currentAttitude.yaw)
     }
   }
+  
   override func layoutSubviews() {
     
     super.layoutSubviews()
@@ -131,6 +210,25 @@ class VRView: UIView, SCNSceneRendererDelegate {
     leftSceneView.frame = CGRect(x: 0, y: 0, width: frame.width / 2, height: frame.height)
     rightSceneView.frame = CGRect(x: frame.width / 2, y: 0, width: frame.width / 2, height: frame.height)
     
+  }
+  
+  // MARK: React subviews
+  override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
+    print("SUBVIEWS ADDED", type(of: subview))
+        if subview is VRNodeView {
+          self.contentNode.addChildNode((subview as! VRNodeView).node)
+        } else {
+    
+        }
+    super.insertReactSubview(subview, at: atIndex)
+  }
+  
+  override func removeReactSubview(_ subview: UIView!) {
+    if subview is VRNodeView {
+      (subview as! VRNodeView).node.removeFromParentNode()
+    }
+    
+    super.removeReactSubview(subview)
   }
 
 }

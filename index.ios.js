@@ -5,19 +5,14 @@
  */
 
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { AppRegistry, } from 'react-native';
 
-import { VRView } from './src/vr';
+import MainScene from './src/main_scene';
 
 export default class VRDemo extends Component {
   render() {
     return (
-      <VRView style={{flex: 1}} />
+      <MainScene />
     );
   }
 }
