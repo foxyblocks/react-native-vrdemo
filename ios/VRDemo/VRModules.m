@@ -93,6 +93,7 @@ RCT_EXPORT_MODULE()
 }
 
 RCT_EXPORT_VIEW_PROPERTY(radius, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(color, UIColor)
 @end
 
 

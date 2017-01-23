@@ -22,6 +22,7 @@ func radiansToDegrees(_ radians: Float) -> Float {
 
 class VRNodeView : UIView {
   var node = SCNNode()
+  var vrView : VRView?
   
   var position : SCNVector3 {
     get {
@@ -53,8 +54,9 @@ class VRNodeView : UIView {
   
   // MARK: React subviews
   override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
-    if subview is VRNodeView {
-      self.node.addChildNode((subview as! VRNodeView).node)
+    if let nodeView = subview as? VRNodeView {
+      self.node.addChildNode(nodeView.node)
+      nodeView.vrView = self.vrView
     }
 
     super.insertReactSubview(subview, at: atIndex)
@@ -83,11 +85,20 @@ class VRSphereView : VRNodeView {
     }
   }
   
+  var color : UIColor {
+    get {
+      return ball.firstMaterial?.diffuse.contents as! UIColor
+    }
+    
+    set {
+      ball.firstMaterial?.diffuse.contents = newValue
+    }
+  }
+  
   override init(frame: CGRect) {
     print("Sphere Added")
     super.init(frame: frame)
     
-//    let ballNode = SCNNode(geometry: ball)
     let material = SCNMaterial()
     material.diffuse.contents = UIColor.white
     material.specular.contents = UIColor.white
@@ -103,15 +114,14 @@ class VRSphereView : VRNodeView {
 
 class VRView: UIView, SCNSceneRendererDelegate {
   
-  private var didSetupConstraints = false
+  private var leftSceneView : SCNView!
+  private var rightSceneView : SCNView!
   
-  var leftSceneView : SCNView!
-  var rightSceneView : SCNView!
-  
-  var motionManager : CMMotionManager?
-  var cameraRollNode : SCNNode?
-  var cameraPitchNode : SCNNode?
-  var cameraYawNode : SCNNode?
+  private var motionManager : CMMotionManager?
+  private let cameraRollNode = SCNNode()
+  private let cameraPitchNode = SCNNode()
+  private let cameraYawNode = SCNNode()
+
   var contentNode : SCNNode!
   
   
@@ -156,16 +166,11 @@ class VRView: UIView, SCNSceneRendererDelegate {
     // so roll the cameras by -90 degrees to orient the view correctly.
     camerasNode.eulerAngles = SCNVector3Make(degreesToRadians(-90.0), 0, 0)
     
-    cameraRollNode = SCNNode()
-    cameraRollNode!.addChildNode(camerasNode)
+    cameraRollNode.addChildNode(camerasNode)
+    cameraPitchNode.addChildNode(cameraRollNode)
+    cameraYawNode.addChildNode(cameraPitchNode)
     
-    cameraPitchNode = SCNNode()
-    cameraPitchNode!.addChildNode(cameraRollNode!)
-    
-    cameraYawNode = SCNNode()
-    cameraYawNode!.addChildNode(cameraPitchNode!)
-    
-    scene.rootNode.addChildNode(cameraYawNode!)
+    scene.rootNode.addChildNode(cameraYawNode)
     leftSceneView.pointOfView = leftCameraNode
     rightSceneView.pointOfView = rightCameraNode
 
@@ -180,44 +185,20 @@ class VRView: UIView, SCNSceneRendererDelegate {
     rightSceneView.isPlaying = true
     
     
-//    let urlString = "http://cdn2.vrideo.com/prod_videos/v1/QpFmQDI_1080p_full.mp4"
-//    guard let url = URL(string: urlString) else {
-//      fatalError("Failed to create URL")
-//    }
-//    let videoNode = VRVideo360(url: url)
-//    
-//    videoNode.player.play()
-//    
-//    scene.rootNode.addChildNode(videoNode.node)
-    
-
-    
-//    scene.rootNode.addChildNode(ballNode)
-    
     contentNode = SCNNode()
     scene.rootNode.addChildNode(contentNode)
 
     self.setNeedsLayout()
   }
   
-  
-//  - (void)insertReactSubview:(RCTTabBarItem *)subview atIndex:(NSInteger)atIndex
-//  {
-//  if (![subview isKindOfClass:[RCTTabBarItem class]]) {
-//  RCTLogError(@"subview should be of type RCTTabBarItem");
-//  return;
-//  }
-//  [super insertReactSubview:subview atIndex:atIndex];
-//  _tabsChanged = YES;
-//  }
   func renderer(_ aRenderer: SCNSceneRenderer, updateAtTime time: TimeInterval)
   {
     if let mm = motionManager, let motion = mm.deviceMotion {
       let currentAttitude = motion.attitude
       
-      cameraRollNode!.eulerAngles.x = Float(currentAttitude.roll)
-      cameraPitchNode!.eulerAngles.z = Float(currentAttitude.pitch)
-      cameraYawNode!.eulerAngles.y = Float(currentAttitude.yaw)
+      cameraRollNode.eulerAngles.x = Float(currentAttitude.roll)
+      cameraPitchNode.eulerAngles.z = Float(currentAttitude.pitch)
+      cameraYawNode.eulerAngles.y = Float(currentAttitude.yaw)
     }
   }
   
@@ -234,17 +215,16 @@ class VRView: UIView, SCNSceneRendererDelegate {
   // MARK: React subviews
   override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
     print("SUBVIEWS ADDED", type(of: subview))
-        if subview is VRNodeView {
-          self.contentNode.addChildNode((subview as! VRNodeView).node)
-        } else {
-    
-        }
+    if let nodeView = subview as? VRNodeView {
+      self.contentNode.addChildNode(nodeView.node)
+      nodeView.vrView = self
+    }
     super.insertReactSubview(subview, at: atIndex)
   }
   
   override func removeReactSubview(_ subview: UIView!) {
-    if subview is VRNodeView {
-      (subview as! VRNodeView).node.removeFromParentNode()
+     if let nodeView = subview as? VRNodeView {
+      nodeView.node.removeFromParentNode()
     }
     
     super.removeReactSubview(subview)
