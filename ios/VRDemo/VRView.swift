@@ -21,7 +21,7 @@ func radiansToDegrees(_ radians: Float) -> Float {
 }
 
 class VRNodeView : UIView {
-  var node : SCNNode
+  var node = SCNNode()
   
   var position : SCNVector3 {
     get {
@@ -44,18 +44,6 @@ class VRNodeView : UIView {
   }
   
   override init(frame: CGRect) {
-    self.node = SCNNode();
-    
-    let ball = SCNSphere(radius: 1)
-    let ballNode = SCNNode(geometry: ball)
-    ballNode.position = SCNVector3(x: 0.0, y: -7, z: 0)
-    let material = SCNMaterial()
-    material.diffuse.contents = UIColor.white
-    material.specular.contents = UIColor.white
-    material.shininess = 1.0
-    ball.materials = [ material ]
-    
-    node.addChildNode(ballNode)
     super.init(frame: frame)
   }
   
@@ -67,9 +55,8 @@ class VRNodeView : UIView {
   override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
     if subview is VRNodeView {
       self.node.addChildNode((subview as! VRNodeView).node)
-    } else {
-      
     }
+
     super.insertReactSubview(subview, at: atIndex)
   }
   
@@ -79,6 +66,26 @@ class VRNodeView : UIView {
     }
     
     super.removeReactSubview(subview)
+  }
+}
+
+class VRSphereView : VRNodeView {
+  override init(frame: CGRect) {
+    print("Sphere Added")
+    super.init(frame: frame)
+    
+    let ball = SCNSphere(radius: 1)
+//    let ballNode = SCNNode(geometry: ball)
+    let material = SCNMaterial()
+    material.diffuse.contents = UIColor.white
+    material.specular.contents = UIColor.white
+    material.shininess = 1.0
+    ball.materials = [ material ]
+    self.node.geometry = ball
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 }
 

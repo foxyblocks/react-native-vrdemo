@@ -27,8 +27,7 @@
 @end
 
 
-
-# pragma mark - VRView
+# pragma mark - VRViewManager
 
 @interface VRViewManager : RCTViewManager
 @end
@@ -44,18 +43,23 @@ RCT_EXPORT_MODULE()
 
 @end
 
-# pragma mark - VRNodeView
+# pragma mark - VRNodeViewManager
 
 @interface VRNodeViewManager : RCTViewManager
+- (VRNodeView *)node;
 @end
 
 @implementation VRNodeViewManager
 
 RCT_EXPORT_MODULE()
 
+- (VRNodeView *)node {
+  return [[VRNodeView alloc] init];
+}
+
 - (UIView *)view
 {
-  return [[VRNodeView alloc] init];
+  return [self node];
 }
 
 
@@ -72,6 +76,21 @@ RCT_CUSTOM_VIEW_PROPERTY(rotation, SCNVector3, VRNodeView) {
   [view setPosition:json ? [RCTConvert SCNVector3:json] : SCNVector3Zero];
 }
 
+@end
+
+# pragma mark - VRSphereViewManager
+
+@interface VRSphereViewManager : VRNodeViewManager
+@end
+
+@implementation VRSphereViewManager
+
+RCT_EXPORT_MODULE()
+
+- (VRNodeView *)node
+{
+  return [[VRSphereView alloc] init];
+}
 @end
 
 
