@@ -1,24 +1,14 @@
-import React,  { Component } from 'react';
-import { requireNativeComponent, VRNodeManager } from 'react-native';
+import React from 'react';
+import { requireNativeComponent } from 'react-native';
+
+export const VRView = props => <VRViewNative {...props} />;
+
+export const Group = props => <NodeNative {...props} />;
+
+export const Sphere = props => <SphereNative {...props} />;
+
 
 const VRViewNative = requireNativeComponent('VRView', VRView);
-const VRNodeNative = requireNativeComponent('VRNodeView', Group);
-const VRSphereNative = requireNativeComponent('VRSphereView', Sphere);
+const NodeNative = requireNativeComponent('VRNodeView', Group);
+const SphereNative = requireNativeComponent('VRSphereView', Sphere);
 
-export default class VRView extends Component {
-  render() {
-    return <VRViewNative {...this.props} />
-  }
-}
-
-export class Group extends Component {
-  render() {
-    return <VRNodeNative {...this.props} />;
-  }
-}
-
-export class Sphere extends Component {
-  render() {
-    return <VRSphereNative {...this.props} />;
-  }
-}

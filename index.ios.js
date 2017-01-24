@@ -4,17 +4,15 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import { AppRegistry, } from 'react-native';
+import React from 'react';
+import { AppRegistry } from 'react-native';
 
 import MainScene from './src/main_scene';
 
-export default class VRDemo extends Component {
-  render() {
-    return (
-      <MainScene />
-    );
-  }
+export default function VRDemo() {
+  return (
+    <MainScene />
+  );
 }
 
 AppRegistry.registerComponent('VRDemo', () => VRDemo);
