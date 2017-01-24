@@ -73,44 +73,95 @@ class VRNodeView : UIView {
 
 class VRSphereView : VRNodeView {
   
-  private let ball = SCNSphere(radius: 0)
+  private let geometry = SCNSphere(radius: 0)
   
   var radius : CGFloat {
     get {
-      return ball.radius
+      return geometry.radius
     }
     
     set {
-      ball.radius = newValue
+      geometry.radius = newValue
     }
   }
   
   var color : UIColor {
     get {
-      return ball.firstMaterial?.diffuse.contents as! UIColor
+      return geometry.firstMaterial?.diffuse.contents as! UIColor
     }
     
     set {
-      ball.firstMaterial?.diffuse.contents = newValue
+      geometry.firstMaterial?.diffuse.contents = newValue
     }
   }
   
   override init(frame: CGRect) {
-    print("Sphere Added")
     super.init(frame: frame)
     
     let material = SCNMaterial()
     material.diffuse.contents = UIColor.white
     material.specular.contents = UIColor.white
     material.shininess = 1.0
-    ball.materials = [ material ]
-    self.node.geometry = ball
+    geometry.materials = [ material ]
+    self.node.geometry = geometry
   }
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 }
+
+class VRPlaneView : VRNodeView {
+  
+  private let geometry = SCNPlane(width: 1, height: 1)
+  
+  var width : CGFloat {
+    get {
+      return geometry.width
+    }
+    
+    set {
+      geometry.width = newValue
+    }
+  }
+  
+  var height : CGFloat {
+    get {
+      return geometry.height
+    }
+    
+    set {
+      geometry.height = newValue
+    }
+  }
+  
+  var color : UIColor {
+    get {
+      return geometry.firstMaterial?.diffuse.contents as! UIColor
+    }
+    
+    set {
+      geometry.firstMaterial?.diffuse.contents = newValue
+    }
+  }
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    
+    let material = SCNMaterial()
+    material.diffuse.contents = UIColor.white
+    material.specular.contents = UIColor.white
+    material.shininess = 1.0
+    material.isDoubleSided = true
+    geometry.materials = [ material ]
+    self.node.geometry = geometry
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+}
+
 
 class VRView: UIView, SCNSceneRendererDelegate {
   

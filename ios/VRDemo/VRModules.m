@@ -96,6 +96,24 @@ RCT_EXPORT_VIEW_PROPERTY(radius, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(color, UIColor)
 @end
 
+# pragma mark - VRPlaneViewManager
+
+@interface VRPlaneViewManager : VRNodeViewManager
+@end
+
+@implementation VRPlaneViewManager
+
+RCT_EXPORT_MODULE()
+
+- (VRNodeView *)node
+{
+  return [[VRPlaneView alloc] init];
+}
+
+RCT_EXPORT_VIEW_PROPERTY(color, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(width, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(height, CGFloat)
+@end
 
 
 //@interface RCT_EXTERN_MODULE(VRViewManager, RCTViewManager)
