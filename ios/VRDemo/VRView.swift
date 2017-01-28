@@ -20,16 +20,21 @@ func radiansToDegrees(_ radians: Float) -> Float {
   return (180.0/Float(M_PI)) * radians
 }
 
+func isSimulator() -> Bool {
+   return ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] != nil
+}
+
 class VRNodeView : UIView {
   var node = SCNNode()
   var vrView : VRView?
   
-  var position : SCNVector3 {
+  var nodePosition : SCNVector3 {
     get {
       return node.position
     }
     
     set {
+      print("Set position", newValue)
       node.position = newValue;
     }
   }
@@ -40,7 +45,10 @@ class VRNodeView : UIView {
     }
     
     set {
-      node.eulerAngles = newValue;
+      print("Set rotation", newValue)
+      node.eulerAngles.x = degreesToRadians(newValue.x);
+      node.eulerAngles.y = degreesToRadians(newValue.y);
+      node.eulerAngles.z = degreesToRadians(newValue.z);
     }
   }
   
@@ -69,6 +77,10 @@ class VRNodeView : UIView {
     
     super.removeReactSubview(subview)
   }
+}
+
+class VRHudView : VRNodeView {
+  
 }
 
 class VRSphereView : VRNodeView {
@@ -162,18 +174,61 @@ class VRPlaneView : VRNodeView {
   }
 }
 
+class VRFloorView : VRNodeView {
+  
+  private let geometry = SCNFloor()
+  
+  var reflectivity : CGFloat {
+    get {
+      return geometry.reflectivity
+    }
+    
+    set {
+      geometry.reflectivity = newValue
+    }
+  }
+  
+  var color : UIColor {
+    get {
+      return geometry.firstMaterial?.diffuse.contents as! UIColor
+    }
+    
+    set {
+      geometry.firstMaterial?.diffuse.contents = newValue
+    }
+  }
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    
+    let material = SCNMaterial()
+    material.diffuse.contents = UIColor.white
+    material.specular.contents = UIColor.white
+    material.isDoubleSided = true
+    geometry.materials = [ material ]
+    self.node.geometry = geometry
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+}
+
 
 class VRView: UIView, SCNSceneRendererDelegate {
+  var contentNode : SCNNode!
+  var hudNode : SCNNode!
   
   private var leftSceneView : SCNView!
   private var rightSceneView : SCNView!
   
   private var motionManager : CMMotionManager?
-  private let cameraRollNode = SCNNode()
   private let cameraPitchNode = SCNNode()
+  private let cameraRollNode = SCNNode()
   private let cameraYawNode = SCNNode()
+  private let camerasNode = SCNNode()
 
-  var contentNode : SCNNode!
+  private var touchStartPoint : CGPoint?
   
   
   required init?(coder aDecoder: NSCoder) {
@@ -208,22 +263,40 @@ class VRView: UIView, SCNSceneRendererDelegate {
     rightCameraNode.camera = SCNCamera()
     rightCameraNode.position = SCNVector3(x: 0.5, y: 0.0, z: 0.0)
     
-    let camerasNode = SCNNode()
+//    let camerasNode = SCNNode()
     camerasNode.position = SCNVector3(x: 0.0, y:0.0, z:0.0)
     camerasNode.addChildNode(leftCameraNode)
     camerasNode.addChildNode(rightCameraNode)
     
+    
+    // Create hud node
+    hudNode = SCNNode()
+    camerasNode.addChildNode(hudNode)
+    
+    
     // The user will be holding their device up (i.e. 90 degrees roll from a flat orientation)
     // so roll the cameras by -90 degrees to orient the view correctly.
-    camerasNode.eulerAngles = SCNVector3Make(degreesToRadians(-90.0), 0, 0)
+    if isSimulator() {
+      camerasNode.eulerAngles = SCNVector3Make(degreesToRadians(0), 0, 0)
+    }
     
-    cameraRollNode.addChildNode(camerasNode)
-    cameraPitchNode.addChildNode(cameraRollNode)
-    cameraYawNode.addChildNode(cameraPitchNode)
+
+    // Create Floor
+    let floor = SCNFloor()
+    floor.reflectivity = 0.15
+    let mat = SCNMaterial()
+    let darkBlue = UIColor(red: 0.0, green: 0.0, blue: 0.5, alpha: 1.0)
+    mat.diffuse.contents = darkBlue
+    mat.specular.contents = darkBlue
+    floor.materials = [mat]
+    let floorNode = SCNNode(geometry: floor)
+    floorNode.position = SCNVector3(x: 0, y: -3, z: 0)
+    scene.rootNode.addChildNode(floorNode)
     
-    scene.rootNode.addChildNode(cameraYawNode)
+    scene.rootNode.addChildNode(camerasNode)
     leftSceneView.pointOfView = leftCameraNode
     rightSceneView.pointOfView = rightCameraNode
+
 
     
     // Respond to user head movement
@@ -232,12 +305,14 @@ class VRView: UIView, SCNSceneRendererDelegate {
     motionManager?.startDeviceMotionUpdates(using: CMAttitudeReferenceFrame.xArbitraryZVertical)
     
     leftSceneView?.delegate = self
+    rightSceneView?.delegate = self
     leftSceneView.isPlaying = true
     rightSceneView.isPlaying = true
     
-    
     contentNode = SCNNode()
     scene.rootNode.addChildNode(contentNode)
+    
+    
 
     self.setNeedsLayout()
   }
@@ -247,9 +322,9 @@ class VRView: UIView, SCNSceneRendererDelegate {
     if let mm = motionManager, let motion = mm.deviceMotion {
       let currentAttitude = motion.attitude
       
-      cameraRollNode.eulerAngles.x = Float(currentAttitude.roll)
-      cameraPitchNode.eulerAngles.z = Float(currentAttitude.pitch)
-      cameraYawNode.eulerAngles.y = Float(currentAttitude.yaw)
+      camerasNode.eulerAngles.x = Float(currentAttitude.roll) - degreesToRadians(90)
+      camerasNode.eulerAngles.z = Float(currentAttitude.pitch)
+      camerasNode.eulerAngles.y = Float(currentAttitude.yaw)
     }
   }
   
@@ -265,7 +340,12 @@ class VRView: UIView, SCNSceneRendererDelegate {
   
   // MARK: React subviews
   override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
-    print("SUBVIEWS ADDED", type(of: subview))
+    
+    if let nodeView = subview as? VRHudView {
+      print("HUD ADDED", type(of: subview))
+      self.hudNode.addChildNode(nodeView.node)
+      nodeView.vrView = self
+    }
     if let nodeView = subview as? VRNodeView {
       self.contentNode.addChildNode(nodeView.node)
       nodeView.vrView = self
@@ -279,6 +359,32 @@ class VRView: UIView, SCNSceneRendererDelegate {
     }
     
     super.removeReactSubview(subview)
+  }
+  
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    print("touchesBegan", isSimulator())
+    if !isSimulator() {
+      return
+    }
+    if let touch = touches.first {
+        self.touchStartPoint = touch.location(in: self)
+    }
+  }
+  
+  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if !isSimulator() {
+      return
+    }
+    if let touch = touches.first {
+      let currentPoint = touch.location(in: self)
+      let startPoint = self.touchStartPoint!
+      let yDiff = startPoint.y - currentPoint.y
+      let xDiff = startPoint.x - currentPoint.x
+     
+      camerasNode.eulerAngles.x = camerasNode.eulerAngles.x + Float(yDiff) * 0.0001
+      camerasNode.eulerAngles.y = camerasNode.eulerAngles.y + Float(xDiff) * 0.0001
+    }
+    
   }
 
 }

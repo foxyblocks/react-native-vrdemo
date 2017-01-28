@@ -9,6 +9,8 @@
 
 #import <React/RCTBridgeModule.h>
 #import <React/RCTViewManager.h>
+#import <React/RCTConvert.h>
+#import <React/UIView+React.h>
 #import <SceneKit/SceneKit.h>
 #import "VRDemo-Swift.h"
 
@@ -24,7 +26,18 @@
     [self CGFloat:json[@"z"]],
   };
 }
+
++ (SCNVector3)EulerAngles:(id)json
+{
+  return (SCNVector3){
+    [self CGFloat:json[@"x"]],
+    [self CGFloat:json[@"y"]],
+    [self CGFloat:json[@"z"]],
+  };
+}
+
 @end
+
 
 
 # pragma mark - VRViewManager
@@ -62,20 +75,29 @@ RCT_EXPORT_MODULE()
   return [self node];
 }
 
+//- (UIView *)shadowView
+//{
+//    return nil;
+//}
 
-- (RCTShadowView *)shadowView
+RCT_EXPORT_VIEW_PROPERTY(rotation, SCNVector3)
+RCT_EXPORT_VIEW_PROPERTY(nodePosition, SCNVector3)
+
+@end
+
+# pragma mark - VRHudViewManager
+
+@interface VRHudViewManager : VRNodeViewManager
+@end
+
+@implementation VRHudViewManager
+
+RCT_EXPORT_MODULE()
+
+- (VRNodeView *)node
 {
-  return nil;
+  return [[VRHudView alloc] init];
 }
-
-RCT_CUSTOM_VIEW_PROPERTY(position, SCNVector3, VRNodeView) {
-  [view setPosition:json ? [RCTConvert SCNVector3:json] : SCNVector3Zero];
-}
-
-RCT_CUSTOM_VIEW_PROPERTY(rotation, SCNVector3, VRNodeView) {
-  [view setPosition:json ? [RCTConvert SCNVector3:json] : SCNVector3Zero];
-}
-
 @end
 
 # pragma mark - VRSphereViewManager
@@ -96,6 +118,7 @@ RCT_EXPORT_VIEW_PROPERTY(radius, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(color, UIColor)
 @end
 
+
 # pragma mark - VRPlaneViewManager
 
 @interface VRPlaneViewManager : VRNodeViewManager
@@ -115,27 +138,20 @@ RCT_EXPORT_VIEW_PROPERTY(width, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(height, CGFloat)
 @end
 
+@interface VRFloorViewManager : VRNodeViewManager
+@end
 
-//@interface RCT_EXTERN_MODULE(VRViewManager, RCTViewManager)
-////  RCT_EXTERN_METHOD(addNode:(NSDictionary *)coords)
-//@end
+@implementation VRFloorViewManager
+
+RCT_EXPORT_MODULE()
+
+- (VRNodeView *)node
+{
+    return [[VRFloorView alloc] init];
+}
+
+RCT_EXPORT_VIEW_PROPERTY(color, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(reflectivity, CGFloat)
+@end
 
 
-//@interface RCT_EXTERN_MODULE(VRNodeManager, NSObject)
-//RCT_EXTERN_METHOD(addNode:(NSDictionary *)coords)
-//@end
-
-//@interface VRNodeManager : NSObject <RCTBridgeModule>
-//  
-//@end
-//
-//@implementation VRNodeManager
-//
-//RCT_EXPORT_MODULE();
-//
-//RCT_EXPORT_METHOD(addNode:(NSDictionary *)coords)
-//{
-//  RCTLogInfo(@"Pretending to create an event %@ at %@", name, location);
-//}
-//
-//@end
