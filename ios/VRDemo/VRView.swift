@@ -34,7 +34,6 @@ class VRNodeView : UIView {
     }
     
     set {
-      print("Set position", newValue)
       node.position = newValue;
     }
   }
@@ -45,7 +44,6 @@ class VRNodeView : UIView {
     }
     
     set {
-      print("Set rotation", newValue)
       node.eulerAngles.x = degreesToRadians(newValue.x);
       node.eulerAngles.y = degreesToRadians(newValue.y);
       node.eulerAngles.z = degreesToRadians(newValue.z);
@@ -83,39 +81,62 @@ class VRHudView : VRNodeView {
   
 }
 
-class VRSphereView : VRNodeView {
-  
-  private let geometry = SCNSphere(radius: 0)
-  
-  var radius : CGFloat {
-    get {
-      return geometry.radius
-    }
-    
-    set {
-      geometry.radius = newValue
-    }
-  }
-  
+class VRShapeView : VRNodeView {
+  var geometry : SCNGeometry?
   var color : UIColor {
     get {
-      return geometry.firstMaterial?.diffuse.contents as! UIColor
+      return geometry?.firstMaterial?.diffuse.contents as! UIColor
     }
     
     set {
-      geometry.firstMaterial?.diffuse.contents = newValue
+      geometry?.firstMaterial?.diffuse.contents = newValue
     }
   }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     
+    geometry = makeGeometry();
     let material = SCNMaterial()
     material.diffuse.contents = UIColor.white
     material.specular.contents = UIColor.white
     material.shininess = 1.0
-    geometry.materials = [ material ]
+    
+    geometry?.materials = [ material ]
+
     self.node.geometry = geometry
+  }
+  
+  func makeGeometry() -> SCNGeometry {
+    return SCNGeometry()
+  }
+  
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+}
+
+class VRSphereView : VRShapeView {
+  
+  
+  var radius : CGFloat {
+    get {
+      return (geometry as! SCNSphere).radius
+    }
+    
+    set {
+      (geometry as! SCNSphere).radius = newValue
+    }
+  }
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+  }
+  
+  override func makeGeometry() -> SCNGeometry {
+    return SCNSphere(radius: 0)
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -123,50 +144,34 @@ class VRSphereView : VRNodeView {
   }
 }
 
-class VRPlaneView : VRNodeView {
-  
-  private let geometry = SCNPlane(width: 1, height: 1)
+class VRPlaneView : VRShapeView {
   
   var width : CGFloat {
     get {
-      return geometry.width
+      return (geometry as! SCNPlane).width
     }
     
     set {
-      geometry.width = newValue
+      (geometry as! SCNPlane).width = newValue
     }
   }
   
   var height : CGFloat {
     get {
-      return geometry.height
+      return (geometry as! SCNPlane).height
     }
     
     set {
-      geometry.height = newValue
-    }
-  }
-  
-  var color : UIColor {
-    get {
-      return geometry.firstMaterial?.diffuse.contents as! UIColor
-    }
-    
-    set {
-      geometry.firstMaterial?.diffuse.contents = newValue
+      (geometry as! SCNPlane).height = newValue
     }
   }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
-    let material = SCNMaterial()
-    material.diffuse.contents = UIColor.white
-    material.specular.contents = UIColor.white
-    material.shininess = 1.0
-    material.isDoubleSided = true
-    geometry.materials = [ material ]
-    self.node.geometry = geometry
+  }
+  
+  override func makeGeometry() -> SCNGeometry {
+    return SCNPlane(width: 1, height: 1)
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -174,38 +179,24 @@ class VRPlaneView : VRNodeView {
   }
 }
 
-class VRFloorView : VRNodeView {
-  
-  private let geometry = SCNFloor()
+class VRFloorView : VRShapeView {
   
   var reflectivity : CGFloat {
     get {
-      return geometry.reflectivity
+      return (geometry as! SCNFloor).reflectivity
     }
     
     set {
-      geometry.reflectivity = newValue
-    }
-  }
-  
-  var color : UIColor {
-    get {
-      return geometry.firstMaterial?.diffuse.contents as! UIColor
-    }
-    
-    set {
-      geometry.firstMaterial?.diffuse.contents = newValue
+      (geometry as! SCNFloor).reflectivity = newValue
     }
   }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
-    let material = SCNMaterial()
-    material.diffuse.contents = UIColor.white
-    material.isDoubleSided = true
-    geometry.materials = [ material ]
-    self.node.geometry = geometry
+  }
+  
+  override func makeGeometry() -> SCNGeometry {
+    return SCNFloor()
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -348,7 +339,6 @@ class VRView: UIView, SCNSceneRendererDelegate {
   }
   
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    print("touchesBegan", isSimulator())
     if !isSimulator() {
       return
     }
