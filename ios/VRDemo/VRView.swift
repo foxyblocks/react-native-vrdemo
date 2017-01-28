@@ -203,7 +203,6 @@ class VRFloorView : VRNodeView {
     
     let material = SCNMaterial()
     material.diffuse.contents = UIColor.white
-    material.specular.contents = UIColor.white
     material.isDoubleSided = true
     geometry.materials = [ material ]
     self.node.geometry = geometry
@@ -279,19 +278,6 @@ class VRView: UIView, SCNSceneRendererDelegate {
     if isSimulator() {
       camerasNode.eulerAngles = SCNVector3Make(degreesToRadians(0), 0, 0)
     }
-    
-
-    // Create Floor
-    let floor = SCNFloor()
-    floor.reflectivity = 0.15
-    let mat = SCNMaterial()
-    let darkBlue = UIColor(red: 0.0, green: 0.0, blue: 0.5, alpha: 1.0)
-    mat.diffuse.contents = darkBlue
-    mat.specular.contents = darkBlue
-    floor.materials = [mat]
-    let floorNode = SCNNode(geometry: floor)
-    floorNode.position = SCNVector3(x: 0, y: -3, z: 0)
-    scene.rootNode.addChildNode(floorNode)
     
     scene.rootNode.addChildNode(camerasNode)
     leftSceneView.pointOfView = leftCameraNode

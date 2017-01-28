@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from 'react';
-import { requireNativeComponent } from 'react-native';
+import React, { PropTypes } from 'react';
+import { requireNativeComponent, ColorPropType } from 'react-native';
 
 // ------------------------------------------------------------------------------------------
 // PropTypes
@@ -93,6 +93,14 @@ Plane.defaultProps = {
   height: 1,
 };
 
+export const Floor = withGroup(props => <FloorNative {...props} />);
+
+Floor.propTypes = {
+  ...NodeTypes,
+  reflectivity: PropTypes.number,
+  color: ColorPropType,
+};
+
 const VRViewNative = requireNativeComponent('VRView', VRView);
 const NodeNative = requireNativeComponent('VRNodeView', Group, {
   nativeOnly: { nodePosition: true },
@@ -100,4 +108,5 @@ const NodeNative = requireNativeComponent('VRNodeView', Group, {
 const HudNative = requireNativeComponent('VRHudView', Hud);
 const SphereNative = requireNativeComponent('VRSphereView', Sphere);
 const PlaneNative = requireNativeComponent('VRPlaneView', Plane);
+const FloorNative = requireNativeComponent('VRFloorView', Floor);
 
