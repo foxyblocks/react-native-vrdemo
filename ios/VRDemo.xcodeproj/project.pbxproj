@@ -21,7 +21,8 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		350D08541E3DA984007D7BA7 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350D08531E3DA984007D7BA7 /* CameraPreviewView.swift */; };
-		3539C8291E354990004E45EC /* CameraPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3539C8281E354990004E45EC /* CameraPreview.swift */; };
+		350D08571E3EB29A007D7BA7 /* VRNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350D08561E3EB29A007D7BA7 /* VRNodeView.swift */; };
+		350D08591E3EB2FA007D7BA7 /* VRShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350D08581E3EB2FA007D7BA7 /* VRShapeView.swift */; };
 		356446B41E3449C7004CDCCB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356446B31E3449C7004CDCCB /* AppDelegate.swift */; };
 		356446CF1E344CA6004CDCCB /* VRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356446CE1E344CA6004CDCCB /* VRView.swift */; };
 		356446D41E34517D004CDCCB /* VRModules.m in Sources */ = {isa = PBXBuildFile; fileRef = 356446D31E34517D004CDCCB /* VRModules.m */; };
@@ -233,7 +234,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = VRDemo/Info.plist; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		350D08531E3DA984007D7BA7 /* CameraPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
-		3539C8281E354990004E45EC /* CameraPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreview.swift; sourceTree = "<group>"; };
+		350D08561E3EB29A007D7BA7 /* VRNodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRNodeView.swift; sourceTree = "<group>"; };
+		350D08581E3EB2FA007D7BA7 /* VRShapeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRShapeView.swift; sourceTree = "<group>"; };
 		356446B21E3449C7004CDCCB /* VRDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VRDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 		356446B31E3449C7004CDCCB /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = VRDemo/AppDelegate.swift; sourceTree = "<group>"; };
 		356446CE1E344CA6004CDCCB /* VRView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VRView.swift; path = VRDemo/VRView.swift; sourceTree = "<group>"; };
@@ -354,6 +356,7 @@
 		13B07FAE1A68108700A75B9A /* VRDemo */ = {
 			isa = PBXGroup;
 			children = (
+				350D08551E3EB1DF007D7BA7 /* VRViews */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -363,8 +366,6 @@
 				356446CE1E344CA6004CDCCB /* VRView.swift */,
 				356446D51E348441004CDCCB /* VRVideo360.swift */,
 				356446D31E34517D004CDCCB /* VRModules.m */,
-				3539C8281E354990004E45EC /* CameraPreview.swift */,
-				350D08531E3DA984007D7BA7 /* CameraPreviewView.swift */,
 			);
 			name = VRDemo;
 			sourceTree = "<group>";
@@ -382,6 +383,17 @@
 				3DAD3EAF1DF850E9000B6D8A /* libjschelpers.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		350D08551E3EB1DF007D7BA7 /* VRViews */ = {
+			isa = PBXGroup;
+			children = (
+				350D08531E3DA984007D7BA7 /* CameraPreviewView.swift */,
+				350D08561E3EB29A007D7BA7 /* VRNodeView.swift */,
+				350D08581E3EB2FA007D7BA7 /* VRShapeView.swift */,
+			);
+			name = VRViews;
+			path = VRDemo/VRViews;
 			sourceTree = "<group>";
 		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
@@ -804,9 +816,10 @@
 				356446CF1E344CA6004CDCCB /* VRView.swift in Sources */,
 				356446B41E3449C7004CDCCB /* AppDelegate.swift in Sources */,
 				350D08541E3DA984007D7BA7 /* CameraPreviewView.swift in Sources */,
-				3539C8291E354990004E45EC /* CameraPreview.swift in Sources */,
 				356446D41E34517D004CDCCB /* VRModules.m in Sources */,
 				356446D61E348441004CDCCB /* VRVideo360.swift in Sources */,
+				350D08591E3EB2FA007D7BA7 /* VRShapeView.swift in Sources */,
+				350D08571E3EB29A007D7BA7 /* VRNodeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
