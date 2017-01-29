@@ -12,7 +12,7 @@ const Vector3Type = PropTypes.shape({
   z: PropTypes.number,
 });
 
-const NodeTypes = {
+const NodeProps = {
   position: Vector3Type,
   rotation: Vector3Type,
 };
@@ -20,6 +20,10 @@ const NodeTypes = {
 const NodeDefaults = {
   position: Vector3Zero,
   rotation: Vector3Zero,
+};
+
+const ShapeProps = {
+  color: ColorPropType,
 };
 // ------------------------------------------------------------------------------------------
 
@@ -40,7 +44,7 @@ export const Group = ({ position, rotation, ...rest }) => {
 };
 
 Group.propTypes = {
-  ...NodeTypes,
+  ...NodeProps,
 };
 
 Group.defaultProps = {
@@ -57,14 +61,14 @@ const withGroup = (Wrapped) => {
     );
   }
 
-  Grouped.propTypes = NodeTypes;
+  Grouped.propTypes = NodeProps;
 
   return Grouped;
 };
 
 export const Hud = props => <HudNative {...props} />;
 Hud.propTypes = {
-  ...NodeTypes,
+  ...NodeProps,
 };
 
 Hud.defaultProps = {
@@ -72,7 +76,8 @@ Hud.defaultProps = {
 
 export const Sphere = withGroup(props => <SphereNative {...props} />);
 Sphere.propTypes = {
-  ...NodeTypes,
+  ...NodeProps,
+  ...ShapeProps,
   radius: PropTypes.number,
 };
 
@@ -83,7 +88,8 @@ Sphere.defaultProps = {
 export const Plane = withGroup(props => <PlaneNative {...props} />);
 
 Plane.propTypes = {
-  ...NodeTypes,
+  ...NodeProps,
+  ...ShapeProps,
   width: PropTypes.number,
   height: PropTypes.number,
 };
@@ -96,9 +102,9 @@ Plane.defaultProps = {
 export const Floor = withGroup(props => <FloorNative {...props} />);
 
 Floor.propTypes = {
-  ...NodeTypes,
+  ...NodeProps,
+  ...ShapeProps,
   reflectivity: PropTypes.number,
-  color: ColorPropType,
 };
 
 const VRViewNative = requireNativeComponent('VRView', VRView);

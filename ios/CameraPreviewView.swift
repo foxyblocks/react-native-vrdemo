@@ -45,9 +45,32 @@ class CameraPreviewView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
+  private func orient(orientation: AVCaptureVideoOrientation) {
+    previewLayer.connection.videoOrientation = orientation
+  }
+  
   override func layoutSubviews() {
     super.layoutSubviews()
     
     previewLayer.frame = self.bounds;
+    
+    // set orientation
+    if let connection = self.previewLayer.connection  {
+
+      if connection.isVideoOrientationSupported {
+        switch (UIDevice.current.orientation) {
+        case .portrait: orient(orientation: .portrait)
+          break
+        case .landscapeRight: orient(orientation: .landscapeLeft)
+          break
+        case .landscapeLeft: orient(orientation: .landscapeRight)
+          break
+        case .portraitUpsideDown: orient(orientation: .portraitUpsideDown)
+          break
+        default: orient(orientation: .portrait)
+          break
+        }
+      }
+    }
   }
 }

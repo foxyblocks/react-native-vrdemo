@@ -219,6 +219,8 @@ class VRView: UIView, SCNSceneRendererDelegate {
   private let camerasNode = SCNNode()
 
   private var touchStartPoint : CGPoint?
+  private var touchStartAngles : SCNVector3?
+  private var cameraPreview : CameraPreviewView?
   
   
   required init?(coder aDecoder: NSCoder) {
@@ -254,26 +256,28 @@ class VRView: UIView, SCNSceneRendererDelegate {
     rightCameraNode.position = SCNVector3(x: 0.5, y: 0.0, z: 0.0)
     
 //    let camerasNode = SCNNode()
-    camerasNode.position = SCNVector3(x: 0.0, y:0.0, z:0.0)
+    camerasNode.position = SCNVector3Zero
     camerasNode.addChildNode(leftCameraNode)
     camerasNode.addChildNode(rightCameraNode)
     
     
     // Create hud node
     hudNode = SCNNode()
-    camerasNode.addChildNode(hudNode)
+    hudNode.position = SCNVector3Zero
+    hudNode.addChildNode(camerasNode)
     
     
     // The user will be holding their device up (i.e. 90 degrees roll from a flat orientation)
     // so roll the cameras by -90 degrees to orient the view correctly.
-    if isSimulator() {
-      camerasNode.eulerAngles = SCNVector3Make(degreesToRadians(0), 0, 0)
+    if !isSimulator() {
+//      hudNode.eulerAngles = SCNVector3(x: degreesToRadians(-180), y: 0, z: 0)
+//      print("NOT SIMULATOR")
+      hudNode.eulerAngles = SCNVector3(x: degreesToRadians(-90), y: 0, z: 0)
     }
     
-    scene.rootNode.addChildNode(camerasNode)
+    scene.rootNode.addChildNode(hudNode)
     leftSceneView.pointOfView = leftCameraNode
     rightSceneView.pointOfView = rightCameraNode
-
 
     
     // Respond to user head movement
@@ -289,7 +293,9 @@ class VRView: UIView, SCNSceneRendererDelegate {
     contentNode = SCNNode()
     scene.rootNode.addChildNode(contentNode)
     
-    
+//    let previewFrame = CGRect(origin: CGPoint.zero, size: CGSize(width: 300, height: 200))
+//    cameraPreview = CameraPreviewView(frame: previewFrame)
+//    leftSceneView.addSubview(cameraPreview!)
 
     self.setNeedsLayout()
   }
@@ -298,10 +304,20 @@ class VRView: UIView, SCNSceneRendererDelegate {
   {
     if let mm = motionManager, let motion = mm.deviceMotion {
       let currentAttitude = motion.attitude
+      var multiplier : Float
       
-      camerasNode.eulerAngles.x = Float(currentAttitude.roll) - degreesToRadians(90)
-      camerasNode.eulerAngles.z = Float(currentAttitude.pitch)
-      camerasNode.eulerAngles.y = Float(currentAttitude.yaw)
+      switch UIDevice.current.orientation {
+      case .landscapeLeft:
+        multiplier = -1.0
+      case .landscapeRight:
+        multiplier = 1.0
+      default:
+        multiplier = 1.0
+      }
+      
+      hudNode.eulerAngles.x = multiplier * Float(currentAttitude.roll) - degreesToRadians(90)
+      hudNode.eulerAngles.z = multiplier * Float(currentAttitude.pitch)
+      hudNode.eulerAngles.y = Float(currentAttitude.yaw)
     }
   }
   
@@ -322,8 +338,8 @@ class VRView: UIView, SCNSceneRendererDelegate {
       print("HUD ADDED", type(of: subview))
       self.hudNode.addChildNode(nodeView.node)
       nodeView.vrView = self
-    }
-    if let nodeView = subview as? VRNodeView {
+    } else if let nodeView = subview as? VRNodeView {
+      print("Content View ADDED", type(of: subview))
       self.contentNode.addChildNode(nodeView.node)
       nodeView.vrView = self
     }
@@ -344,6 +360,7 @@ class VRView: UIView, SCNSceneRendererDelegate {
     }
     if let touch = touches.first {
         self.touchStartPoint = touch.location(in: self)
+        self.touchStartAngles = hudNode.eulerAngles
     }
   }
   
@@ -357,8 +374,8 @@ class VRView: UIView, SCNSceneRendererDelegate {
       let yDiff = startPoint.y - currentPoint.y
       let xDiff = startPoint.x - currentPoint.x
      
-      camerasNode.eulerAngles.x = camerasNode.eulerAngles.x + Float(yDiff) * 0.0001
-      camerasNode.eulerAngles.y = camerasNode.eulerAngles.y + Float(xDiff) * 0.0001
+      hudNode.eulerAngles.x = touchStartAngles!.x + Float(yDiff) * 0.01
+      hudNode.eulerAngles.y = touchStartAngles!.y + Float(xDiff) * 0.01
     }
     
   }
