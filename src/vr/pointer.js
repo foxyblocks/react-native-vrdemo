@@ -1,58 +1,82 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
-export default function Pointer() {
-  const container = {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    position: 'absolute',
-    left: 0,
-    top: 0,
-    bottom: 0,
-    right: 0,
-  };
+export default class Pointer extends Component {
+  constructor(props) {
+    super(props);
+    this.circles = [];
+    this.startAnimating = this.startAnimating.bind(this);
+    this.reset = this.reset.bind(this);
+  }
 
-  const circleStyle = {
-    backgroundColor: 'transparent',
-  };
+  startAnimating() {
+    this.circles.forEach((circle) => {
+      circle.performLinearAnimation(100, 1000);
+    });
+  }
 
-  const viewStyle = {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center', };
+  reset() {
+    this.circles.forEach((circle) => {
+      circle.performLinearAnimation(0, 350);
+    });
+  }
 
-  const eyeOffset = -20;
+  render() {
+    const container = {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'row',
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      bottom: 0,
+      right: 0,
+    };
 
-  const leftView = {
-    ...viewStyle,
-    marginRight: eyeOffset,
-  };
+    const circleStyle = {
+      backgroundColor: 'transparent',
+    };
 
-  const rightView = {
-    ...viewStyle,
-    marginLeft: eyeOffset,
-  };
+    const viewStyle = {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    };
 
-  const circleProps = {
-    size: 40,
-    fill: 20,
-    width: 10,
-    backgroundColor: 'rgba(255,255,255, 0.5)',
-    tintColor: 'white',
-    style: circleStyle,
-  };
+    const eyeOffset = -20;
 
-  return (
-    <View style={container} pointerEvents="none">
-      <View style={leftView}>
-        <AnimatedCircularProgress {...circleProps} />
+    const leftView = {
+      ...viewStyle,
+      marginRight: eyeOffset,
+    };
+
+    const rightView = {
+      ...viewStyle,
+      marginLeft: eyeOffset,
+    };
+
+    const circleRef = c => this.circles.push(c);
+    const circleProps = {
+      size: 40,
+      fill: 0,
+      width: 10,
+      backgroundColor: 'rgba(255,255,255, 0.5)',
+      tintColor: 'white',
+      style: circleStyle,
+    };
+
+
+    return (
+      <View style={container} pointerEvents="none">
+        <View style={leftView}>
+          <AnimatedCircularProgress ref={circleRef} {...circleProps} />
+        </View>
+        <View style={rightView}>
+          <AnimatedCircularProgress ref={circleRef} {...circleProps} />
+        </View>
       </View>
-      <View style={rightView}>
-        <AnimatedCircularProgress {...circleProps} />
-      </View>
-    </View>
-  );
+    );
+  }
 }

@@ -21,12 +21,11 @@ func radiansToDegrees(_ radians: Float) -> Float {
 }
 
 func isSimulator() -> Bool {
-   return ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] != nil
+  return ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] != nil
 }
 
 
 class VRHudView : VRNodeView {
-  
 }
 
 
@@ -46,6 +45,8 @@ class VRView: UIView, SCNSceneRendererDelegate {
   private var touchStartPoint : CGPoint?
   private var touchStartAngles : SCNVector3?
   private var cameraPreview : CameraPreviewView?
+  private var hitNode : VRNodeView?
+  private var nodeViewMap = NSMapTable<SCNNode, VRNodeView>(keyOptions: NSMapTableStrongMemory, valueOptions: NSMapTableStrongMemory)
   
   
   required init?(coder aDecoder: NSCoder) {
@@ -80,11 +81,10 @@ class VRView: UIView, SCNSceneRendererDelegate {
     rightCameraNode.camera = SCNCamera()
     rightCameraNode.position = SCNVector3(x: 0.5, y: 0.0, z: 0.0)
     
-//    let camerasNode = SCNNode()
+    // setup camerasNode
     camerasNode.position = SCNVector3Zero
     camerasNode.addChildNode(leftCameraNode)
     camerasNode.addChildNode(rightCameraNode)
-    
     
     // Create hud node
     hudNode = SCNNode()
@@ -113,13 +113,14 @@ class VRView: UIView, SCNSceneRendererDelegate {
     leftSceneView.isPlaying = true
     rightSceneView.isPlaying = true
     
+    
     contentNode = SCNNode()
     scene.rootNode.addChildNode(contentNode)
     
 //    let previewFrame = CGRect(origin: CGPoint.zero, size: CGSize(width: 300, height: 200))
 //    cameraPreview = CameraPreviewView(frame: previewFrame)
 //    leftSceneView.addSubview(cameraPreview!)
-
+    
     self.setNeedsLayout()
   }
   
@@ -142,6 +143,42 @@ class VRView: UIView, SCNSceneRendererDelegate {
       hudNode.eulerAngles.z = multiplier * Float(currentAttitude.pitch)
       hudNode.eulerAngles.y = Float(currentAttitude.yaw)
     }
+    
+    doHitTest()
+  }
+  
+  
+  func trackNodeView(nodeView: VRNodeView) {
+    nodeView.vrView = self
+    nodeViewMap.setObject(nodeView, forKey: nodeView.node)
+  }
+  
+  func unTrackNodeView(nodeView: VRNodeView) {
+    nodeViewMap.removeObject(forKey: nodeView.node)
+  }
+  
+  func doHitTest() {
+    let from = SCNVector3Zero
+    let to = SCNVector3(x: 0, y: 0, z: -1000)
+    let newFrom = self.contentNode.convertPosition(from, from: self.hudNode)
+    let newTo = self.contentNode.convertPosition(to, from: self.hudNode)
+    
+    let hits = self.contentNode.hitTestWithSegment(from: newFrom, to: newTo, options: nil)
+    
+    if let firstItem = hits.first {
+      if let nodeView = nodeViewMap.object(forKey: firstItem.node) {
+        if hitNode !== nodeView {
+          hitNode?.hitEnd()
+          hitNode = nodeView
+          nodeView.hitStart()
+        }
+      }
+    }
+    
+    if hits.isEmpty {
+      hitNode?.hitEnd()
+      hitNode = nil
+    }
   }
   
   override func layoutSubviews() {
@@ -157,14 +194,9 @@ class VRView: UIView, SCNSceneRendererDelegate {
   // MARK: React subviews
   override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
     
-    if let nodeView = subview as? VRHudView {
-      print("HUD ADDED", type(of: subview))
-      self.hudNode.addChildNode(nodeView.node)
-      nodeView.vrView = self
-    } else if let nodeView = subview as? VRNodeView {
-      print("Content View ADDED", type(of: subview))
+    if let nodeView = subview as? VRNodeView {
       self.contentNode.addChildNode(nodeView.node)
-      nodeView.vrView = self
+      nodeView.addedToVRView(vrView: self)
     }
     super.insertReactSubview(subview, at: atIndex)
   }
@@ -172,6 +204,7 @@ class VRView: UIView, SCNSceneRendererDelegate {
   override func removeReactSubview(_ subview: UIView!) {
      if let nodeView = subview as? VRNodeView {
       nodeView.node.removeFromParentNode()
+      self.unTrackNodeView(nodeView: nodeView)
     }
     
     super.removeReactSubview(subview)
@@ -181,7 +214,6 @@ class VRView: UIView, SCNSceneRendererDelegate {
     if !isSimulator() {
       return
     }
-    print("Touches began")
     if let touch = touches.first {
         self.touchStartPoint = touch.location(in: self)
         self.touchStartAngles = hudNode.eulerAngles
@@ -200,6 +232,8 @@ class VRView: UIView, SCNSceneRendererDelegate {
      
       hudNode.eulerAngles.x = touchStartAngles!.x + Float(yDiff) * 0.01
       hudNode.eulerAngles.y = touchStartAngles!.y + Float(xDiff) * 0.01
+      
+      doHitTest()
     }
     
   }

@@ -247,7 +247,7 @@
 		350D085C1E3EE09F007D7BA7 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		356446B21E3449C7004CDCCB /* VRDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VRDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 		356446B31E3449C7004CDCCB /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = VRDemo/AppDelegate.swift; sourceTree = "<group>"; };
-		356446CE1E344CA6004CDCCB /* VRView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VRView.swift; path = VRDemo/VRView.swift; sourceTree = "<group>"; };
+		356446CE1E344CA6004CDCCB /* VRView.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; name = VRView.swift; path = VRDemo/VRView.swift; sourceTree = "<group>"; tabWidth = 2; };
 		356446D31E34517D004CDCCB /* VRModules.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VRModules.m; path = VRDemo/VRModules.m; sourceTree = "<group>"; };
 		356446D51E348441004CDCCB /* VRVideo360.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VRVideo360.swift; path = VRDemo/VRVideo360.swift; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };

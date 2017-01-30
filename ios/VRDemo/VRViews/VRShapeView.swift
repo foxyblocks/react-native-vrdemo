@@ -11,7 +11,7 @@ import SceneKit
 
 // MARK: VRShapeView
 
-class VRShapeView : VRNodeView {
+class VRShapeView : UIView {
   var geometry : SCNGeometry?
   var color : UIColor {
     get {
@@ -28,13 +28,11 @@ class VRShapeView : VRNodeView {
     
     geometry = makeGeometry();
     let material = SCNMaterial()
-    material.diffuse.contents = UIColor.white
+    material.diffuse.contents = UIColor.white 
     material.specular.contents = UIColor.white
     material.shininess = 1.0
     
     geometry?.materials = [ material ]
-    
-    self.node.geometry = geometry
   }
   
   func makeGeometry() -> SCNGeometry {

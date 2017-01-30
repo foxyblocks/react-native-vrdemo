@@ -9,9 +9,19 @@
 import Foundation
 import SceneKit
 
+@objc
+protocol VRHitDelegate {
+  func hitStart(nodeView: VRNodeView)
+  func hitEnd(nodeView: VRNodeView)
+}
+
 class VRNodeView : UIView {
+  var identifier = NSUUID().uuidString
   var node = SCNNode()
   var vrView : VRView?
+  var hitDelegate : VRHitDelegate?
+  var onHitStart : RCTBubblingEventBlock?
+  var onHitEnd : RCTBubblingEventBlock?
   
   var nodePosition : SCNVector3 {
     get {
@@ -35,6 +45,14 @@ class VRNodeView : UIView {
     }
   }
   
+  func hitStart() {
+    hitDelegate?.hitStart(nodeView: self)
+  }
+  
+  func hitEnd() {
+    hitDelegate?.hitEnd(nodeView: self)
+  }
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
   }
@@ -43,19 +61,34 @@ class VRNodeView : UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
+  func addedToVRView(vrView: VRView) {
+    vrView.trackNodeView(nodeView: self)
+    if let rctSubviews = reactSubviews() {
+      for childView in rctSubviews {
+        if let childNodeView = childView as? VRNodeView {
+          childNodeView.addedToVRView(vrView: vrView)
+        }
+      }
+    }
+  }
+  
   // MARK: React subviews
   override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
     if let nodeView = subview as? VRNodeView {
       self.node.addChildNode(nodeView.node)
-      nodeView.vrView = self.vrView
+    }
+    
+    if let shapeView = subview as? VRShapeView {
+      self.node.geometry = shapeView.geometry
     }
     
     super.insertReactSubview(subview, at: atIndex)
   }
   
   override func removeReactSubview(_ subview: UIView!) {
-    if subview is VRNodeView {
-      (subview as! VRNodeView).node.removeFromParentNode()
+    if let nodeView = subview as? VRNodeView {
+      nodeView.node.removeFromParentNode()
+      self.vrView?.unTrackNodeView(nodeView: nodeView)
     }
     
     super.removeReactSubview(subview)

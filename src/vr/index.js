@@ -1,6 +1,7 @@
-import React, { PropTypes } from 'react';
+import React, { PropTypes, Component } from 'react';
 import Pointer from './pointer.js';
 import { requireNativeComponent, ColorPropType, View } from 'react-native';
+import { pick, omit } from 'lodash';
 
 // ------------------------------------------------------------------------------------------
 // PropTypes
@@ -23,66 +24,164 @@ const NodeDefaults = {
   rotation: Vector3Zero,
 };
 
+const PointableProps = {
+  onPointerEnter: PropTypes.func,
+  onPointerLeave: PropTypes.func,
+  onPointerHold: PropTypes.func,
+};
+
 const ShapeProps = {
+  ...PointableProps,
   color: ColorPropType,
 };
 // ------------------------------------------------------------------------------------------
 
-export const VRView = props => (
-  <View style={{ flex: 1 }}>
-    <VRViewNative {...props} />
-    <Pointer />
-  </View>
-);
+export class VRView extends Component {
+  constructor(props) {
+    super(props);
+    this.handlePointerStart = this.handlePointerStart.bind(this);
+    this.handlePointerEnd = this.handlePointerEnd.bind(this);
+  }
+
+  getChildContext() {
+    return {
+      startPointer: this.handlePointerStart,
+      endPointer: this.handlePointerEnd,
+    };
+  }
+
+  handlePointerStart() {
+    if (this.pointer) {
+      this.pointer.startAnimating();
+    }
+  }
+
+  handlePointerEnd() {
+    if (this.pointer) {
+      this.pointer.reset();
+    }
+  }
+
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <VRViewNative {...this.props} />
+        <Pointer ref={(c) => { this.pointer = c; }} />
+      </View>
+    );
+  }
+}
 VRView.propTypes = { };
-
-export const Group = ({ position, rotation, ...rest }) => {
-  const passedProps = {
-    // rename position to nodePosition to avoid name conflict
-    // we also merge in a zero for any missing axis.
-    // allowing the consumer to only specify the axes that are non-zero
-    nodePosition: { ...Vector3Zero, ...position },
-    rotation: { ...Vector3Zero, ...rotation },
-    ...rest,
-  };
-
-  return <NodeNative {...passedProps} />;
+VRView.childContextTypes = {
+  startPointer: PropTypes.func,
+  endPointer: PropTypes.func,
 };
+
+export class Group extends Component {
+  render() {
+    const { position, rotation, ...rest } = this.props;
+    const passedProps = {
+      // rename position to nodePosition to avoid name conflict
+      // we also merge in a zero for any missing axis.
+      // allowing the consumer to only specify the axes that are non-zero
+      nodePosition: { ...Vector3Zero, ...position },
+      rotation: { ...Vector3Zero, ...rotation },
+      ...rest,
+    };
+
+    return <NodeNative {...passedProps} />;
+  }
+}
 
 Group.propTypes = {
   ...NodeProps,
+  onHitStart: PropTypes.func,
+  onHitEnd: PropTypes.func,
 };
 
 Group.defaultProps = {
   ...NodeDefaults,
+  onHitStart: () => {},
+  onHitEnd: () => {},
 };
 
 
 const withGroup = (Wrapped) => {
-  function Grouped({ position, rotation, ...rest }) {
-    return (
-      <Group position={position} rotation={rotation}>
-        <Wrapped {...rest} />
-      </Group>
-    );
+  class Grouped extends Component {
+    constructor(props) {
+      super(props);
+      this.handleHitStart = this.handleHitStart.bind(this);
+      this.handleHitEnd = this.handleHitEnd.bind(this);
+    }
+
+    componentWillUnmount() {
+      clearTimeout(this.timeout);
+    }
+
+    handleHitStart() {
+      if (this.props.onPointerEnter) {
+        this.props.onPointerEnter();
+      }
+
+      if (!this.props.onPointerHold) {
+        return;
+      }
+
+      this.context.startPointer();
+      this.timeout = setTimeout(() => {
+        if (this.props.onPointerHold) {
+          this.props.onPointerHold();
+        }
+      }, 1000);
+    }
+
+    handleHitEnd() {
+      if (this.props.onPointerLeave) {
+        this.props.onPointerLeave();
+      }
+      if (!this.props.onPointerHold) {
+        return;
+      }
+
+      clearTimeout(this.timeout);
+      this.context.endPointer();
+    }
+
+    render() {
+      const groupProps = [
+        'position',
+        'rotation',
+      ];
+
+      return (
+        <Group
+          {...pick(this.props, groupProps)}
+          onHitStart={this.handleHitStart}
+          onHitEnd={this.handleHitEnd}
+        >
+          <Wrapped {...omit(this.props, groupProps)} />
+        </Group>
+      );
+    }
   }
 
-  Grouped.propTypes = NodeProps;
+  Grouped.propTypes = {
+    ...PointableProps,
+  };
+
+  Grouped.defaultProps = {
+  };
+
+  Grouped.contextTypes = {
+    startPointer: PropTypes.func,
+    endPointer: PropTypes.func,
+  };
 
   return Grouped;
 };
 
-export const Hud = props => <HudNative {...props} />;
-Hud.propTypes = {
-  ...NodeProps,
-};
-
-Hud.defaultProps = {
-};
-
 export const Sphere = withGroup(props => <SphereNative {...props} />);
 Sphere.propTypes = {
-  ...NodeProps,
   ...ShapeProps,
   radius: PropTypes.number,
 };
@@ -94,7 +193,6 @@ Sphere.defaultProps = {
 export const Plane = withGroup(props => <PlaneNative {...props} />);
 
 Plane.propTypes = {
-  ...NodeProps,
   ...ShapeProps,
   width: PropTypes.number,
   height: PropTypes.number,
@@ -108,7 +206,6 @@ Plane.defaultProps = {
 export const Floor = withGroup(props => <FloorNative {...props} />);
 
 Floor.propTypes = {
-  ...NodeProps,
   ...ShapeProps,
   reflectivity: PropTypes.number,
 };
@@ -117,7 +214,6 @@ const VRViewNative = requireNativeComponent('VRView', VRView);
 const NodeNative = requireNativeComponent('VRNodeView', Group, {
   nativeOnly: { nodePosition: true },
 });
-const HudNative = requireNativeComponent('VRHudView', Hud);
 const SphereNative = requireNativeComponent('VRSphereView', Sphere);
 const PlaneNative = requireNativeComponent('VRPlaneView', Plane);
 const FloorNative = requireNativeComponent('VRFloorView', Floor);
