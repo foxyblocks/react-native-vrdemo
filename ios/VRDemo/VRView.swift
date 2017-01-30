@@ -181,6 +181,7 @@ class VRView: UIView, SCNSceneRendererDelegate {
     if !isSimulator() {
       return
     }
+    print("Touches began")
     if let touch = touches.first {
         self.touchStartPoint = touch.location(in: self)
         self.touchStartAngles = hudNode.eulerAngles

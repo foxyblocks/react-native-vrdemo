@@ -23,6 +23,7 @@
 		350D08541E3DA984007D7BA7 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350D08531E3DA984007D7BA7 /* CameraPreviewView.swift */; };
 		350D08571E3EB29A007D7BA7 /* VRNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350D08561E3EB29A007D7BA7 /* VRNodeView.swift */; };
 		350D08591E3EB2FA007D7BA7 /* VRShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350D08581E3EB2FA007D7BA7 /* VRShapeView.swift */; };
+		350D08621E3EE0A6007D7BA7 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 350D08611E3EE09F007D7BA7 /* libART.a */; };
 		356446B41E3449C7004CDCCB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356446B31E3449C7004CDCCB /* AppDelegate.swift */; };
 		356446CF1E344CA6004CDCCB /* VRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356446CE1E344CA6004CDCCB /* VRView.swift */; };
 		356446D41E34517D004CDCCB /* VRModules.m in Sources */ = {isa = PBXBuildFile; fileRef = 356446D31E34517D004CDCCB /* VRModules.m */; };
@@ -94,6 +95,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
+		};
+		350D08601E3EE09F007D7BA7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 350D085C1E3EE09F007D7BA7 /* ART.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
+			remoteInfo = ART;
 		};
 		3DAD3E831DF850E9000B6D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -236,6 +244,7 @@
 		350D08531E3DA984007D7BA7 /* CameraPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		350D08561E3EB29A007D7BA7 /* VRNodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRNodeView.swift; sourceTree = "<group>"; };
 		350D08581E3EB2FA007D7BA7 /* VRShapeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRShapeView.swift; sourceTree = "<group>"; };
+		350D085C1E3EE09F007D7BA7 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		356446B21E3449C7004CDCCB /* VRDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VRDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 		356446B31E3449C7004CDCCB /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = VRDemo/AppDelegate.swift; sourceTree = "<group>"; };
 		356446CE1E344CA6004CDCCB /* VRView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VRView.swift; path = VRDemo/VRView.swift; sourceTree = "<group>"; };
@@ -259,6 +268,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				350D08621E3EE0A6007D7BA7 /* libART.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -396,6 +406,14 @@
 			path = VRDemo/VRViews;
 			sourceTree = "<group>";
 		};
+		350D085D1E3EE09F007D7BA7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				350D08611E3EE09F007D7BA7 /* libART.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -417,6 +435,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				350D085C1E3EE09F007D7BA7 /* ART.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -534,6 +553,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 350D085D1E3EE09F007D7BA7 /* Products */;
+					ProjectRef = 350D085C1E3EE09F007D7BA7 /* ART.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
 				},
@@ -641,6 +664,13 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		350D08611E3EE09F007D7BA7 /* libART.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libART.a;
+			remoteRef = 350D08601E3EE09F007D7BA7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {

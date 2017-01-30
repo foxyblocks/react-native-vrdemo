@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
-import { requireNativeComponent, ColorPropType } from 'react-native';
+import Pointer from './pointer.js';
+import { requireNativeComponent, ColorPropType, View } from 'react-native';
 
 // ------------------------------------------------------------------------------------------
 // PropTypes
@@ -27,7 +28,12 @@ const ShapeProps = {
 };
 // ------------------------------------------------------------------------------------------
 
-export const VRView = props => <VRViewNative {...props} />;
+export const VRView = props => (
+  <View style={{ flex: 1 }}>
+    <VRViewNative {...props} />
+    <Pointer />
+  </View>
+);
 VRView.propTypes = { };
 
 export const Group = ({ position, rotation, ...rest }) => {
