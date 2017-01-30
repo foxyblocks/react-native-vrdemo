@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { VRView, Group, Sphere, Plane, Hud, Floor } from './vr';
+import { VRView, Group, Sphere, Plane, Hud, Floor, Text } from './vr';
 
 export default class MainScene extends Component {
   render() {
     return (
-      <VRView style={{ flex: 1 }} showRealWorld >
+      <VRView style={{ flex: 1 }} >
         <Floor position={{ y: -2 }} color="#111" reflectivity={0.12} />
         <Group position={{ y: 2, z: -10 }}>
           <Sphere color="#f00" radius={1} position={{ x: 3 }} />
@@ -16,6 +16,7 @@ export default class MainScene extends Component {
             position={{ z: 2, x: 2, y: -1 }}
             rotation={{ x: -45 }}
           />
+          <Text>Hello</Text>
         </Group>
       </VRView>
     );

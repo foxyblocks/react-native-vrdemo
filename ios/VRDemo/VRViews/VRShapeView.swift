@@ -136,3 +136,77 @@ class VRFloorView : VRShapeView {
   }
 }
 
+// MARK: VRTextView
+
+class VRTextView : VRShapeView {
+  
+  var value : String? {
+    get {
+      return (geometry as! SCNText).string as! String?
+    }
+    
+    set {
+      (geometry as! SCNText).string = newValue
+    }
+  }
+  
+  var textSize : CGFloat {
+    get {
+      return (geometry as! SCNText).font.pointSize
+    }
+    
+    set {
+      if let text = geometry as? SCNText {
+        text.font = text.font.withSize(newValue)
+      }
+    }
+  }
+  
+  var truncationMode : String {
+    get {
+      switch (geometry as! SCNText).truncationMode {
+      case kCATruncationNone:
+        return "none"
+      case kCATruncationStart:
+        return "start"
+      case kCATruncationMiddle:
+        return "middle"
+      case kCATruncationEnd:
+        return "end"
+      default:
+        return "none"
+      }
+    }
+    
+    set {
+      if let text = geometry as? SCNText {
+        switch newValue {
+        case "none":
+          text.truncationMode = kCATruncationNone
+        case "start":
+          text.truncationMode = kCATruncationStart
+        case "middle":
+          text.truncationMode = kCATruncationMiddle
+        case "end":
+          text.truncationMode = kCATruncationEnd
+        default:
+          text.truncationMode = kCATruncationNone
+        }
+      }
+    }
+  }
+		
+  
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+  }
+  
+  override func makeGeometry() -> SCNGeometry {
+    return SCNText()
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+}
+

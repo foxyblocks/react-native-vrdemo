@@ -145,6 +145,8 @@ RCT_EXPORT_VIEW_PROPERTY(width, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(height, CGFloat)
 @end
 
+# pragma mark - VRFloorViewManager
+
 @interface VRFloorViewManager : RCTViewManager
 @end
 
@@ -159,6 +161,26 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_VIEW_PROPERTY(color, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(reflectivity, CGFloat)
+@end
+
+# pragma mark - VRTextViewManager
+
+@interface VRTextViewManager : RCTViewManager
+@end
+
+@implementation VRTextViewManager
+
+RCT_EXPORT_MODULE()
+
+- (UIView *)view
+{
+  return [[VRTextView alloc] init];
+}
+
+RCT_EXPORT_VIEW_PROPERTY(color, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(value, NSString)
+RCT_EXPORT_VIEW_PROPERTY(textSize, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(truncationMode, NSString)
 @end
 
 

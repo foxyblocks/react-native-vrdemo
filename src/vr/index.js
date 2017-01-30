@@ -212,6 +212,23 @@ Floor.propTypes = {
   reflectivity: PropTypes.number,
 };
 
+export const Text = withGroup(({ value, children, ...rest }) => {
+  const passedProps = {
+    ...rest,
+    value: value || children || '',
+  };
+
+  return <TextNative {...passedProps} />;
+});
+
+Text.propTypes = {
+  ...ShapeProps,
+  value: PropTypes.string,
+  textSize: PropTypes.number,
+  truncationMode: PropTypes.oneOf(['none', 'start', 'middle', 'end']),
+  children: PropTypes.string,
+};
+
 const VRViewNative = requireNativeComponent('VRView', VRView);
 const NodeNative = requireNativeComponent('VRNodeView', Group, {
   nativeOnly: { nodePosition: true },
@@ -219,4 +236,5 @@ const NodeNative = requireNativeComponent('VRNodeView', Group, {
 const SphereNative = requireNativeComponent('VRSphereView', Sphere);
 const PlaneNative = requireNativeComponent('VRPlaneView', Plane);
 const FloorNative = requireNativeComponent('VRFloorView', Floor);
+const TextNative = requireNativeComponent('VRTextView', Text);
 
