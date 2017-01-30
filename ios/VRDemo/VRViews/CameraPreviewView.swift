@@ -46,15 +46,18 @@ class CameraPreviewView: UIView {
 
   
   func start() {
-    captureSession.startRunning()
-    self.isHidden = false
     self.layoutSubviews()
+    if !isSimulator() {
+      captureSession.startRunning()
+    }
   }
   
   func stop() {
-    captureSession.stopRunning()
-    self.isHidden = true
     self.layoutSubviews()
+    
+    if !isSimulator() {
+      captureSession.stopRunning()
+    }
   }
   
   required init?(coder aDecoder: NSCoder) {

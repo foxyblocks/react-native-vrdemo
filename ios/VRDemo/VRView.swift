@@ -20,10 +20,12 @@ class VRView: UIView, SCNSceneRendererDelegate {
     }
     
     set {
-      if newValue {
+      if newValue == true {
         cameraPreview?.start()
+        leftSceneView.addSubview(cameraPreview!)
       } else {
         cameraPreview?.stop()
+        cameraPreview!.removeFromSuperview()
       }
     }
   };
@@ -116,7 +118,6 @@ class VRView: UIView, SCNSceneRendererDelegate {
     scene.rootNode.addChildNode(contentNode)
     
     cameraPreview = CameraPreviewView(frame: CGRect.zero)
-    leftSceneView.addSubview(cameraPreview!)
     
     self.setNeedsLayout()
   }
