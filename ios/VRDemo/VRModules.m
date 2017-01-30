@@ -54,6 +54,8 @@ RCT_EXPORT_MODULE()
   return [[VRView alloc] init];
 }
 
+RCT_EXPORT_VIEW_PROPERTY(showRealWorld, BOOL)
+
 @end
 
 # pragma mark - VRNodeViewManager
@@ -103,21 +105,6 @@ RCT_EXPORT_VIEW_PROPERTY(nodePosition, SCNVector3)
 RCT_EXPORT_VIEW_PROPERTY(onHitStart, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onHitEnd, RCTBubblingEventBlock)
 
-@end
-
-# pragma mark - VRHudViewManager
-
-@interface VRHudViewManager : VRNodeViewManager
-@end
-
-@implementation VRHudViewManager
-
-RCT_EXPORT_MODULE()
-
-- (VRNodeView *)node
-{
-  return [[VRHudView alloc] init];
-}
 @end
 
 # pragma mark - VRSphereViewManager

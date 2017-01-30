@@ -11,17 +11,57 @@ import AVFoundation
 
 class CameraPreviewView: UIView {
   
+  var isRunning : Bool {
+    get {
+      return captureSession.isRunning
+    }
+  }
+  
   private var previewLayer : AVCaptureVideoPreviewLayer
+  private var captureSession : AVCaptureSession
+  private var disabledLabel : UILabel?
   
   override init(frame: CGRect) {
     
     // Create capture session
-    let captureSession = AVCaptureSession()
+    captureSession = AVCaptureSession()
     previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
     previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
     
+    
     super.init(frame: frame)
     
+    if(isSimulator()) {
+      // Make text view to show camera not working
+      disabledLabel = UILabel(frame: frame)
+      disabledLabel?.text = "Camera Disabled"
+      disabledLabel?.textColor = UIColor.white
+      self.addSubview(disabledLabel!)
+    } else {
+      startCapture()
+    }
+    
+    self.backgroundColor = UIColor.black
+  }
+
+  
+  func start() {
+    captureSession.startRunning()
+    self.isHidden = false
+    self.layoutSubviews()
+  }
+  
+  func stop() {
+    captureSession.stopRunning()
+    self.isHidden = true
+    self.layoutSubviews()
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  private func startCapture() {
     // try to load capture device
     if let videoDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) {
       
@@ -29,8 +69,6 @@ class CameraPreviewView: UIView {
         // continue setup
         let videoIn = try AVCaptureDeviceInput.init(device: videoDevice)
         captureSession.addInput(videoIn as AVCaptureDeviceInput)
-        
-        captureSession.startRunning()
         
         self.layer.addSublayer(previewLayer)
         
@@ -41,10 +79,6 @@ class CameraPreviewView: UIView {
     }
   }
   
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
   private func orient(orientation: AVCaptureVideoOrientation) {
     previewLayer.connection.videoOrientation = orientation
   }
@@ -53,6 +87,7 @@ class CameraPreviewView: UIView {
     super.layoutSubviews()
     
     previewLayer.frame = self.bounds;
+    disabledLabel?.frame = self.bounds;
     
     // set orientation
     if let connection = self.previewLayer.connection  {

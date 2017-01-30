@@ -12,24 +12,22 @@ import SpriteKit
 import AVFoundation
 import CoreMotion
 
-func degreesToRadians(_ degrees: Float) -> Float {
-  return (degrees * Float(M_PI)) / 180.0
-}
-
-func radiansToDegrees(_ radians: Float) -> Float {
-  return (180.0/Float(M_PI)) * radians
-}
-
-func isSimulator() -> Bool {
-  return ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] != nil
-}
-
-
-class VRHudView : VRNodeView {
-}
-
 
 class VRView: UIView, SCNSceneRendererDelegate {
+  var showRealWorld : Bool {
+    get {
+      return (cameraPreview?.isRunning)!
+    }
+    
+    set {
+      if newValue {
+        cameraPreview?.start()
+      } else {
+        cameraPreview?.stop()
+      }
+    }
+  };
+
   var contentNode : SCNNode!
   var hudNode : SCNNode!
   
@@ -117,9 +115,8 @@ class VRView: UIView, SCNSceneRendererDelegate {
     contentNode = SCNNode()
     scene.rootNode.addChildNode(contentNode)
     
-//    let previewFrame = CGRect(origin: CGPoint.zero, size: CGSize(width: 300, height: 200))
-//    cameraPreview = CameraPreviewView(frame: previewFrame)
-//    leftSceneView.addSubview(cameraPreview!)
+    cameraPreview = CameraPreviewView(frame: CGRect.zero)
+    leftSceneView.addSubview(cameraPreview!)
     
     self.setNeedsLayout()
   }
@@ -188,6 +185,8 @@ class VRView: UIView, SCNSceneRendererDelegate {
   
     leftSceneView.frame = CGRect(x: 0, y: 0, width: frame.width / 2, height: frame.height)
     rightSceneView.frame = CGRect(x: frame.width / 2, y: 0, width: frame.width / 2, height: frame.height)
+    
+    cameraPreview?.frame = leftSceneView.frame
     
   }
   
