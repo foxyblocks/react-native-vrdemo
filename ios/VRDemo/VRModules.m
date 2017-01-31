@@ -82,11 +82,6 @@ RCT_EXPORT_MODULE()
   return nodeView;
 }
 
-- (UIView *)shadowView
-{
-    return nil;
-}
-
 - (void)hitStartWithNodeView:(VRNodeView *)nodeView {
   if (nodeView.onHitStart) {
     nodeView.onHitStart(@{});
@@ -179,8 +174,9 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_VIEW_PROPERTY(color, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(value, NSString)
-RCT_EXPORT_VIEW_PROPERTY(textSize, CGFloat)
-RCT_EXPORT_VIEW_PROPERTY(truncationMode, NSString)
+RCT_EXPORT_VIEW_PROPERTY(fontSize, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(truncation, NSString)
+RCT_EXPORT_VIEW_PROPERTY(alignment, NSString)
 @end
 
 

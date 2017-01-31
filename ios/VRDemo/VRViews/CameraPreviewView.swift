@@ -34,7 +34,7 @@ class CameraPreviewView: UIView {
     if(isSimulator()) {
       // Make text view to show camera not working
       disabledLabel = UILabel(frame: frame)
-      disabledLabel?.text = "Camera Disabled"
+      disabledLabel?.text = "Camera Not Available"
       disabledLabel?.textColor = UIColor.white
       self.addSubview(disabledLabel!)
     } else {

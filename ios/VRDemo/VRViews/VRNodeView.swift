@@ -80,7 +80,13 @@ class VRNodeView : UIView {
     
     if let shapeView = subview as? VRShapeView {
       self.node.geometry = shapeView.geometry
+      shapeView.node = self.node
     }
+    
+    if let shapeView = subview as? VRTextView {
+      shapeView.centerPivot()
+    }
+    
     
     super.insertReactSubview(subview, at: atIndex)
   }

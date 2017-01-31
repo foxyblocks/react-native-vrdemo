@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
-import Pointer from './pointer.js';
+import Pointer from './pointer';
+import Devbar from './devbar';
 import { requireNativeComponent, ColorPropType, View } from 'react-native';
 import { pick, omit } from 'lodash';
 
@@ -41,6 +42,10 @@ export class VRView extends Component {
     super(props);
     this.handlePointerStart = this.handlePointerStart.bind(this);
     this.handlePointerEnd = this.handlePointerEnd.bind(this);
+    this.handleToggleCamera = this.handleToggleCamera.bind(this);
+    this.state = {
+      showingCamera: !!this.props.showRealWorld,
+    };
   }
 
   getChildContext() {
@@ -48,6 +53,12 @@ export class VRView extends Component {
       startPointer: this.handlePointerStart,
       endPointer: this.handlePointerEnd,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.showRealWorld !== this.props.showRealWorld) {
+      this.setState({ showRealWorld: nextProps.showRealWorld });
+    }
   }
 
   handlePointerStart() {
@@ -62,10 +73,27 @@ export class VRView extends Component {
     }
   }
 
+  handleToggleCamera() {
+    this.setState({ showingCamera: !this.state.showingCamera });
+  }
+
   render() {
+    const { children, ...rest } = this.props;
+    const { showingCamera } = this.state;
+
+    const passedProps = {
+      ...rest,
+      showRealWorld: showingCamera,
+    };
+
     return (
       <View style={{ flex: 1 }}>
-        <VRViewNative {...this.props} />
+        <VRViewNative {...passedProps}>
+          { this.props.devBar ?
+            <Devbar showingCamera={showingCamera} onToggleCamera={this.handleToggleCamera} />
+          : null}
+          { children }
+        </VRViewNative>
         <Pointer ref={(c) => { this.pointer = c; }} />
       </View>
     );
@@ -73,6 +101,8 @@ export class VRView extends Component {
 }
 VRView.propTypes = {
   showRealWorld: PropTypes.bool,
+  devBar: PropTypes.bool,
+  children: PropTypes.node.isRequired,
 };
 VRView.childContextTypes = {
   startPointer: PropTypes.func,
@@ -224,8 +254,9 @@ export const Text = withGroup(({ value, children, ...rest }) => {
 Text.propTypes = {
   ...ShapeProps,
   value: PropTypes.string,
-  textSize: PropTypes.number,
-  truncationMode: PropTypes.oneOf(['none', 'start', 'middle', 'end']),
+  fontSize: PropTypes.number,
+  truncation: PropTypes.oneOf(['none', 'start', 'middle', 'end']),
+  alignment: PropTypes.oneOf(['left', 'right', 'center', 'justified', 'natural']),
   children: PropTypes.string,
 };
 

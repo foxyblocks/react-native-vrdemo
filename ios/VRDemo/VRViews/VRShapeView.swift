@@ -12,6 +12,7 @@ import SceneKit
 // MARK: VRShapeView
 
 class VRShapeView : UIView {
+  var node : SCNNode?
   var geometry : SCNGeometry?
   var color : UIColor {
     get {
@@ -147,10 +148,11 @@ class VRTextView : VRShapeView {
     
     set {
       (geometry as! SCNText).string = newValue
+      centerPivot()
     }
   }
   
-  var textSize : CGFloat {
+  var fontSize : CGFloat {
     get {
       return (geometry as! SCNText).font.pointSize
     }
@@ -158,11 +160,12 @@ class VRTextView : VRShapeView {
     set {
       if let text = geometry as? SCNText {
         text.font = text.font.withSize(newValue)
+        centerPivot()
       }
     }
   }
   
-  var truncationMode : String {
+  var truncation : String {
     get {
       switch (geometry as! SCNText).truncationMode {
       case kCATruncationNone:
@@ -192,8 +195,63 @@ class VRTextView : VRShapeView {
         default:
           text.truncationMode = kCATruncationNone
         }
+        
+        centerPivot()
       }
     }
+  }
+  
+  var alignment : String {
+    get {
+      switch (geometry as! SCNText).alignmentMode {
+      case kCAAlignmentLeft:
+        return "left"
+      case kCAAlignmentCenter:
+        return "center"
+      case kCAAlignmentRight:
+        return "right"
+      case kCAAlignmentJustified:
+        return "justified"
+      case kCAAlignmentNatural:
+        return "natural"
+      default:
+        return "natural"
+      }
+    }
+    
+    set {
+      if let text = geometry as? SCNText {
+        switch newValue {
+        case "left":
+          text.alignmentMode = kCAAlignmentLeft
+        case "center":
+          text.alignmentMode = kCAAlignmentCenter
+        case "right":
+          text.alignmentMode = kCAAlignmentRight
+        case "justified":
+          text.alignmentMode = kCAAlignmentJustified
+        case "natural":
+          text.alignmentMode = kCAAlignmentNatural
+        default:
+          text.alignmentMode = kCAAlignmentNatural
+        }
+        centerPivot()
+      }
+    }
+  }
+  
+  func centerPivot() {
+    let boundingBox = (geometry as! SCNText).boundingBox
+    let min = boundingBox.min
+    let max = boundingBox.max
+    
+    let bound = SCNVector3(
+      x: max.x - min.x,
+      y: max.y - min.y,
+      z: max.z - min.z
+    )
+    
+    node?.pivot = SCNMatrix4MakeTranslation(bound.x / 2, bound.y / 2, bound.z / 2)
   }
 		
   

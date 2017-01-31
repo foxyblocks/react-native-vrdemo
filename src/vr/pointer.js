@@ -1,3 +1,4 @@
+import { compact } from 'lodash';
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
@@ -57,7 +58,10 @@ export default class Pointer extends Component {
       marginLeft: eyeOffset,
     };
 
-    const circleRef = c => this.circles.push(c);
+    const circleRef = (c) => {
+      this.circles = compact(this.circles.concat(c));
+    };
+
     const circleProps = {
       size: 40,
       fill: 0,
