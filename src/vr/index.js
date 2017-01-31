@@ -7,7 +7,7 @@ import Devbar from './devbar';
 // ------------------------------------------------------------------------------------------
 // PropTypes
 // ------------------------------------------------------------------------------------------
-const Vector3Zero = {x: 0, y: 0, z: 0};
+const Vector3Zero = { x: 0, y: 0, z: 0 };
 
 const Vector3Type = PropTypes.shape({
   x: PropTypes.number,
@@ -18,11 +18,13 @@ const Vector3Type = PropTypes.shape({
 const NodeProps = {
   position: Vector3Type,
   rotation: Vector3Type,
+  scale: PropTypes.oneOfType([Vector3Type, PropTypes.number]),
 };
 
 const NodeDefaults = {
   position: Vector3Zero,
   rotation: Vector3Zero,
+  scale: { x: 1, y: 1, z: 1 },
 };
 
 const PointableProps = {
@@ -110,15 +112,20 @@ VRView.childContextTypes = {
   endPointer: PropTypes.func,
 };
 
+const convertScale = value => (
+  (typeof value === 'number') ? { x: value, y: value, z: value } : value
+);
+
 export class Group extends Component {
   render() {
-    const { position, rotation, ...rest } = this.props;
+    const { position, rotation, scale, ...rest } = this.props;
     const passedProps = {
       // rename position to nodePosition to avoid name conflict
       // we also merge in a zero for any missing axis.
       // allowing the consumer to only specify the axes that are non-zero
       nodePosition: { ...Vector3Zero, ...position },
       rotation: { ...Vector3Zero, ...rotation },
+      scale: { ...NodeDefaults.scale, ...convertScale(scale) },
       ...rest,
     };
 
@@ -181,10 +188,7 @@ const withGroup = (Wrapped) => {
     }
 
     render() {
-      const groupProps = [
-        'position',
-        'rotation',
-      ];
+      const groupProps = Object.keys(NodeProps);
 
       return (
         <Group

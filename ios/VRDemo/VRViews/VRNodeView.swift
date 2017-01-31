@@ -45,6 +45,16 @@ class VRNodeView : UIView {
     }
   }
   
+  var scale : SCNVector3 {
+    get {
+      return node.scale
+    }
+    
+    set {
+      node.scale = newValue
+    }
+  }
+  
   func hitStart() {
     hitDelegate?.hitStart(nodeView: self)
   }
