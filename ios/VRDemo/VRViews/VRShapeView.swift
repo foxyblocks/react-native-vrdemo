@@ -15,14 +15,13 @@ class VRShapeView : UIView {
   var node : SCNNode?
   var geometry : SCNGeometry?
   var colorMaterial : SCNMaterial?
-  var imageMaterial : SCNMaterial?
   var color : UIColor {
     get {
-      return geometry?.firstMaterial?.diffuse.contents as! UIColor
+      return colorMaterial?.diffuse.contents as! UIColor
     }
     
     set {
-      geometry?.firstMaterial?.diffuse.contents = newValue
+      colorMaterial?.diffuse.contents = newValue
     }
   }
   
@@ -31,7 +30,7 @@ class VRShapeView : UIView {
       return "";
     }
     set {
-      imageMaterial?.diffuse.contents = newValue
+      colorMaterial?.diffuse.contents = newValue
     }
   }
   
@@ -41,11 +40,10 @@ class VRShapeView : UIView {
     geometry = makeGeometry();
     colorMaterial = SCNMaterial()
     colorMaterial?.diffuse.contents = UIColor.white
-    colorMaterial?.shininess = 1.0
+    colorMaterial?.shininess = 0.5
+
     
-    imageMaterial = SCNMaterial()
-    
-    geometry?.materials = [ imageMaterial!, colorMaterial! ]
+    geometry?.materials = [ colorMaterial! ]
   }
   
   func makeGeometry() -> SCNGeometry {

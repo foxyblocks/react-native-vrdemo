@@ -240,6 +240,23 @@ Plane.defaultProps = {
   height: 1,
 };
 
+export const Box = withGroup(props => <BoxNative {...props} />);
+
+Box.propTypes = {
+  ...ShapeProps,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  length: PropTypes.number,
+  borderRadius: PropTypes.number,
+};
+
+Box.defaultProps = {
+  width: 1,
+  height: 1,
+  length: 1,
+  borderRadius: 0,
+};
+
 export const Floor = withGroup(props => <FloorNative {...props} />);
 
 Floor.propTypes = {
@@ -271,6 +288,7 @@ const NodeNative = requireNativeComponent('VRNodeView', Group, {
 });
 const SphereNative = requireNativeComponent('VRSphereView', Sphere);
 const PlaneNative = requireNativeComponent('VRPlaneView', Plane);
+const BoxNative = requireNativeComponent('VRBoxView', Box);
 const FloorNative = requireNativeComponent('VRFloorView', Floor);
 const TextNative = requireNativeComponent('VRTextView', Text);
 

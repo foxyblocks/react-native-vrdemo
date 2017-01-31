@@ -33,6 +33,7 @@
 		35E863451E402BED003AA789 /* VRTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E863441E402BED003AA789 /* VRTextView.swift */; };
 		35E863471E402C18003AA789 /* VRPlaneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E863461E402C18003AA789 /* VRPlaneView.swift */; };
 		35E863491E402C46003AA789 /* VRSphereView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E863481E402C46003AA789 /* VRSphereView.swift */; };
+		35E8634D1E404422003AA789 /* VRBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E8634C1E404422003AA789 /* VRBoxView.swift */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
@@ -260,6 +261,7 @@
 		35E863441E402BED003AA789 /* VRTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRTextView.swift; sourceTree = "<group>"; };
 		35E863461E402C18003AA789 /* VRPlaneView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRPlaneView.swift; sourceTree = "<group>"; };
 		35E863481E402C46003AA789 /* VRSphereView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRSphereView.swift; sourceTree = "<group>"; };
+		35E8634C1E404422003AA789 /* VRBoxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VRBoxView.swift; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -416,6 +418,7 @@
 				35E863441E402BED003AA789 /* VRTextView.swift */,
 				35E863461E402C18003AA789 /* VRPlaneView.swift */,
 				35E863481E402C46003AA789 /* VRSphereView.swift */,
+				35E8634C1E404422003AA789 /* VRBoxView.swift */,
 			);
 			name = VRViews;
 			path = VRDemo/VRViews;
@@ -866,6 +869,7 @@
 				35E863411E3FF4C8003AA789 /* Utility.swift in Sources */,
 				35E863451E402BED003AA789 /* VRTextView.swift in Sources */,
 				356446D61E348441004CDCCB /* VRVideo360.swift in Sources */,
+				35E8634D1E404422003AA789 /* VRBoxView.swift in Sources */,
 				350D08591E3EB2FA007D7BA7 /* VRShapeView.swift in Sources */,
 				35E863431E402BC3003AA789 /* VRFloorView.swift in Sources */,
 				350D08571E3EB29A007D7BA7 /* VRNodeView.swift in Sources */,

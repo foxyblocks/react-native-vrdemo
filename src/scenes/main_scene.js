@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Group, Sphere, Plane, Floor } from '../vr';
+import { Group, Sphere, Plane, Floor, Box } from '../vr';
 
 export default class MainScene extends Component {
   render() {
@@ -20,6 +20,11 @@ export default class MainScene extends Component {
             height={2}
             position={{ z: 2, x: 5, y: -1 }}
             rotation={{ x: -45 }}
+          />
+          <Box
+            color="#ff0"
+            rotation={{ y: 45 }}
+            position={{ z: 3, x: -1 }}
           />
         </Group>
       </Group>

@@ -143,6 +143,29 @@ RCT_EXPORT_VIEW_PROPERTY(width, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(height, CGFloat)
 @end
 
+# pragma mark - VRBoxViewManager
+
+@interface VRBoxViewManager : RCTViewManager
+@end
+
+@implementation VRBoxViewManager
+
+RCT_EXPORT_MODULE()
+
+- (UIView *)view
+{
+  return [[VRBoxView alloc] init];
+}
+
+RCT_EXPORT_VIEW_PROPERTY(color, UIColor)
+RCT_EXPORT_VIEW_PROPERTY(textureSrc, NSString)
+RCT_EXPORT_VIEW_PROPERTY(width, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(height, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(length, CGFloat)
+RCT_EXPORT_VIEW_PROPERTY(borderRadius, CGFloat)
+@end
+
+
 # pragma mark - VRFloorViewManager
 
 @interface VRFloorViewManager : RCTViewManager
