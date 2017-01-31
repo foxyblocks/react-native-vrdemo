@@ -7,11 +7,11 @@
 import React from 'react';
 import { AppRegistry } from 'react-native';
 
-import MainScene from './src/main_scene';
+import AppView from './src/app_view';
 
 export default function VRDemo() {
   return (
-    <MainScene />
+    <AppView />
   );
 }
 

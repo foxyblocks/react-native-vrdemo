@@ -1,8 +1,8 @@
+import { pick, omit } from 'lodash';
 import React, { PropTypes, Component } from 'react';
+import { requireNativeComponent, ColorPropType, View } from 'react-native';
 import Pointer from './pointer';
 import Devbar from './devbar';
-import { requireNativeComponent, ColorPropType, View } from 'react-native';
-import { pick, omit } from 'lodash';
 
 // ------------------------------------------------------------------------------------------
 // PropTypes
@@ -34,6 +34,7 @@ const PointableProps = {
 const ShapeProps = {
   ...PointableProps,
   color: ColorPropType,
+  textureSrc: PropTypes.string,
 };
 // ------------------------------------------------------------------------------------------
 
