@@ -4,6 +4,8 @@ This is an experimental project that wraps native 3D APIs with react native comp
 
 This project is incomplete. Not all features are implemented.
 
+- Currently iOS only (wraps the [SceneKit](https://developer.apple.com/reference/scenekit) framework)
+
 
 ## Running the project
 
@@ -44,6 +46,7 @@ Example:
 Rotation of the group around the x, y and z axes. Values should be specified as a number in degrees. Any axis can be left out and will be defaulted to 0.
 	
 Example: 
+
 ```javascript
 <Group rotation={{ x: 180 }} />
 
