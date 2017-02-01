@@ -193,7 +193,7 @@ class VRView: UIView, SCNSceneRendererDelegate {
   
   // MARK: React subviews
   override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
-    
+    print("insertReactSubview")
     if let nodeView = subview as? VRNodeView {
       self.contentNode.addChildNode(nodeView.node)
       nodeView.addedToVRView(vrView: self)

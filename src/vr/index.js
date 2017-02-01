@@ -97,7 +97,9 @@ export class VRView extends Component {
           : null}
           { children }
         </VRViewNative>
-        <Pointer ref={(c) => { this.pointer = c; }} />
+        { this.props.pointer ?
+          <Pointer ref={(c) => { this.pointer = c; }} />
+        : null }
       </View>
     );
   }
@@ -105,6 +107,7 @@ export class VRView extends Component {
 VRView.propTypes = {
   showRealWorld: PropTypes.bool,
   devBar: PropTypes.bool,
+  pointer: PropTypes.bool,
   children: PropTypes.node.isRequired,
 };
 VRView.childContextTypes = {
@@ -171,6 +174,7 @@ const withGroup = (Wrapped) => {
       this.timeout = setTimeout(() => {
         if (this.props.onPointerHold) {
           this.props.onPointerHold();
+          this.context.endPointer();
         }
       }, 1000);
     }
@@ -267,7 +271,7 @@ Floor.propTypes = {
 export const Text = withGroup(({ value, children, ...rest }) => {
   const passedProps = {
     ...rest,
-    value: value || children || '',
+    value: value || React.Children.toArray(children).join('') || '',
   };
 
   return <TextNative {...passedProps} />;
@@ -279,7 +283,16 @@ Text.propTypes = {
   fontSize: PropTypes.number,
   truncation: PropTypes.oneOf(['none', 'start', 'middle', 'end']),
   alignment: PropTypes.oneOf(['left', 'right', 'center', 'justified', 'natural']),
-  children: PropTypes.string,
+  children: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]),
+};
+
+export const Video360 = props => <Video360Native {...props} />;
+
+Video360.propTypes = {
+  src: PropTypes.string,
 };
 
 const VRViewNative = requireNativeComponent('VRView', VRView);
@@ -291,4 +304,5 @@ const PlaneNative = requireNativeComponent('VRPlaneView', Plane);
 const BoxNative = requireNativeComponent('VRBoxView', Box);
 const FloorNative = requireNativeComponent('VRFloorView', Floor);
 const TextNative = requireNativeComponent('VRTextView', Text);
+const Video360Native = requireNativeComponent('VRVideo360View', Video360);
 

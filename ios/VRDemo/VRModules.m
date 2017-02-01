@@ -103,6 +103,23 @@ RCT_EXPORT_VIEW_PROPERTY(onHitEnd, RCTBubblingEventBlock)
 
 @end
 
+# pragma mark - VRVideo360ViewManager
+
+@interface VRVideo360ViewManager : RCTViewManager
+@end
+
+@implementation VRVideo360ViewManager
+
+RCT_EXPORT_MODULE()
+
+- (UIView *)view
+{
+  return [[VRVideo360View alloc] init];
+}
+
+RCT_EXPORT_VIEW_PROPERTY(src, NSString)
+@end
+
 # pragma mark - VRSphereViewManager
 
 @interface VRSphereViewManager : RCTViewManager

@@ -86,6 +86,9 @@ class VRNodeView : UIView {
   override func insertReactSubview(_ subview: UIView!, at atIndex: Int) {
     if let nodeView = subview as? VRNodeView {
       self.node.addChildNode(nodeView.node)
+      if vrView !== nil {
+        nodeView.addedToVRView(vrView: self.vrView!)
+      }
     }
     
     if let shapeView = subview as? VRShapeView {
