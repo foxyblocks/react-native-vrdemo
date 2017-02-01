@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { VRView, Group, Sphere, Plane, Floor, Box } from '../vr';
 
-const EARTH = "https://img3.goodfon.ru/original/1920x1200/0/a9/zemlya-karta-oblaka.jpg"
+const EARTH = "https://img3.goodfon.ru/original/1920x1200/0/a9/zemlya-karta-oblaka.jpg";
 
 export default class MainScene extends Component {
   render() {
     return (
-      <VRView style={{ flex: 1 }} devBar >
+      <VRView style={{ flex: 1 }} devBar pointer >
         <Group position={{ z: -4 }}>
           <Floor
             position={{ y: -2 }}
