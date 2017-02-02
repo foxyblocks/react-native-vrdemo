@@ -4,7 +4,7 @@ import VideoScene from './scenes/video_scene';
 
 export default class AppView extends Component {
   render() {
-    return <MainScene />;
-    // return <VideoScene />;
+    // return <MainScene />;
+    return <VideoScene />;
   }
 }
