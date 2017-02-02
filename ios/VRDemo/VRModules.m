@@ -55,7 +55,8 @@ RCT_EXPORT_MODULE()
 }
 
 RCT_EXPORT_VIEW_PROPERTY(showRealWorld, BOOL)
-
+RCT_EXPORT_VIEW_PROPERTY(bgSrc, NSString)
+RCT_EXPORT_VIEW_PROPERTY(bgColor, UIColor)
 @end
 
 # pragma mark - VRNodeViewManager

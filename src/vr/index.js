@@ -106,10 +106,19 @@ export class VRView extends Component {
 }
 VRView.propTypes = {
   showRealWorld: PropTypes.bool,
+  bgColor: ColorPropType,
+  bgSrc: PropTypes.string,
   devBar: PropTypes.bool,
   pointer: PropTypes.bool,
   children: PropTypes.node.isRequired,
 };
+
+VRView.defaultProps = {
+  showRealWorld: false,
+  devBar: false,
+  pointer: false,
+};
+
 VRView.childContextTypes = {
   startPointer: PropTypes.func,
   endPointer: PropTypes.func,

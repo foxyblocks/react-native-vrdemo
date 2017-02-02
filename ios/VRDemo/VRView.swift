@@ -14,6 +14,26 @@ import CoreMotion
 
 
 class VRView: UIView, SCNSceneRendererDelegate {
+  var bgColor : UIColor? {
+    get {
+      return UIColor.clear
+    }
+    
+    set {
+      scene.background.contents = newValue
+    }
+  }
+  
+  var bgSrc: String? {
+    get {
+      return ""
+    }
+    
+    set {
+      scene.background.contents = newValue
+    }
+  }
+  
   var showRealWorld : Bool {
     get {
       return (cameraPreview?.isRunning)!
@@ -33,6 +53,7 @@ class VRView: UIView, SCNSceneRendererDelegate {
   var contentNode : SCNNode!
   var hudNode : SCNNode!
   
+  private var scene : SCNScene!
   private var leftSceneView : SCNView!
   private var rightSceneView : SCNView!
   
@@ -67,7 +88,7 @@ class VRView: UIView, SCNSceneRendererDelegate {
     rightSceneView.backgroundColor = UIColor.black
     
     // Create Scene
-    let scene = SCNScene()
+    scene = SCNScene()
     
     leftSceneView.scene = scene
     rightSceneView.scene = scene
