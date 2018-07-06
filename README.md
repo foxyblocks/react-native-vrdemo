@@ -1,10 +1,10 @@
 # Virtual Reality and React native
 
-This is an experimental project that wraps native 3D APIs with react native components to build mobile VR experiences for react native.
+This is an experimental project that wraps native 3D APIs with react native components to build mobile VR experiences for react native. It is intended to run on an iPhone with a head mounted case such as [Google Cardboard](https://vr.google.com/cardboard/)
 
-This project is incomplete. Not all features are implemented.
+- Currently iOS only (depends on the [SceneKit](https://developer.apple.com/reference/scenekit) framework)
 
-- Currently iOS only (wraps the [SceneKit](https://developer.apple.com/reference/scenekit) framework)
+This project is incomplete, and likely won't be developed any futher since the release of the official [React VR](https://facebook.github.io/react-360/) from facebook.
 
 
 ## Running the project
@@ -125,3 +125,9 @@ A shape component that render 2d text. Accepts all the shape properties as well 
 - `fontSize: number` Size of the text
 - `truncation: string(none|left|right|middle)`
 - `alignment: string(natrual|left|right|center|justified)`
+
+# Presentation
+
+A clip from the original demonstration at Instacart HQ. Sorry the video is not longer, this is all that survived.
+
+[![](https://i.imgur.com/ij7I92E.jpg)](https://twitter.com/pinteration/status/827007420232708096)
