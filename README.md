@@ -1,5 +1,7 @@
 # Virtual Reality and React native
 
+![](https://file-hwrgyflure.now.sh)
+
 This is an experimental project that wraps native 3D APIs with react native components to build mobile VR experiences for react native. It is intended to run on an iPhone with a head mounted case such as [Google Cardboard](https://vr.google.com/cardboard/)
 
 - Currently iOS only (depends on the [SceneKit](https://developer.apple.com/reference/scenekit) framework)
@@ -26,6 +28,13 @@ The root view of a VR scene. All other components should be nested inside the VR
 #### `pointer : boolean`
 
 Whether or not to show the interactivity pointer. Default is false.
+
+#### `devBar : boolean`
+
+Whether or not to show the developer bar at the bottom of the VR view.
+Currently this only has a single button which will allow you to turn on the camera of the
+iOS device so you can see the real world while in VR. (currently only works with a real device
+not the simulator)
 
 ![](https://file-tiqxgiegnu.now.sh/)
 
@@ -87,6 +96,15 @@ The shape components include
 #### `textureSrc : string`
 
 URL for the texture to apply to the shape
+
+#### `cullMode : 'front' | 'back'`
+
+Determines the cullMode for the shape texture rendering. (see [SceneKit docs](https://developer.apple.com/documentation/scenekit/scnmaterial/1462571-cullmode))
+
+#### `isDoubleSided : boolean`
+
+Determines if the texture for the shape should be rendered on both the front and back surfaces
+of a shape, or the inside and the outside of a closed shape. (see [SceneKit docs](https://developer.apple.com/documentation/scenekit/scnmaterial/1462531-isdoublesided))
 
 #### `color : string`
 

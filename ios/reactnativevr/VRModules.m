@@ -27,6 +27,15 @@
   };
 }
 
++ (SCNCullMode)SCNCullMode:(id)string
+{
+  if ([string isEqualToString:@"front"]) {
+    return SCNCullModeFront;
+  } else {
+    return SCNCullModeBack;
+  }
+}
+
 + (SCNVector3)EulerAngles:(id)json
 {
   return (SCNVector3){
@@ -138,6 +147,8 @@ RCT_EXPORT_MODULE()
 RCT_EXPORT_VIEW_PROPERTY(radius, CGFloat)
 RCT_EXPORT_VIEW_PROPERTY(color, UIColor)
 RCT_EXPORT_VIEW_PROPERTY(textureSrc, NSString)
+RCT_EXPORT_VIEW_PROPERTY(cullMode, SCNCullMode)
+RCT_EXPORT_VIEW_PROPERTY(isDoubleSided, BOOL)
 @end
 
 

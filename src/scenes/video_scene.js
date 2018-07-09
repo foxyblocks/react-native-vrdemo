@@ -1,55 +1,36 @@
-import React, { Component } from "react";
-import { VRView, Video360, Group, Plane, Floor, Text } from "../vr";
+import React, { Component } from 'react';
+import { VRView, Video360, Group, Plane, Floor, Text, Sphere } from '../vr';
+import * as TEXTURES from '../lib/textures';
+import Button from '../components/button';
+import HomeButton from '../components/home_button';
 
 const VIDEOS = [
   {
-    name: "Color Run",
-    src: "https://theta360.com/en/gallery/sample/videos_s_4.mp4",
-    thumbnail: "https://theta360.com/en/gallery/img/gallery_57.png"
+    name: 'Color Run',
+    src: 'https://theta360.com/en/gallery/sample/videos_s_4.mp4',
+    thumbnail: require('../assets/videos/color_run.png'),
   },
   {
-    name: "Skydive",
-    src: "https://theta360.com/en/gallery/sample/videos_s_9.mp4",
-    thumbnail: "https://theta360.com/en/gallery/img/gallery_62.png"
+    name: 'Skydive',
+    src: 'https://theta360.com/en/gallery/sample/videos_s_9.mp4',
+    thumbnail: require('../assets/videos/skydive.png'),
   },
   {
-    name: "Stargazers",
-    src: "https://theta360.com/en/gallery/sample/videos_s_7.mp4",
-    thumbnail: "https://theta360.com/en/gallery/img/gallery_60.png"
+    name: 'Stargazers',
+    src: 'https://theta360.com/en/gallery/sample/videos_s_7.mp4',
+    thumbnail: require('../assets/videos/stargazers.png'),
   },
   {
-    name: "Paris Drive",
-    src: "https://theta360.com/en/gallery/sample/videos_s_5.mp4",
-    thumbnail: "https://theta360.com/en/gallery/img/gallery_58.png"
+    name: 'Paris Drive',
+    src: 'https://theta360.com/en/gallery/sample/videos_s_5.mp4',
+    thumbnail: require('../assets/videos/paris_drive.png'),
   },
   {
-    name: "Snow",
-    src: "https://theta360.com/en/gallery/sample/videos_s_10.mp4",
-    thumbnail: "https://theta360.com/en/gallery/img/gallery_63.png"
-  }
+    name: 'Snow',
+    src: 'https://theta360.com/en/gallery/sample/videos_s_10.mp4',
+    thumbnail: require('../assets/videos/snow.png'),
+  },
 ];
-
-class Button extends Component {
-  render() {
-    const { children, onPointerHold, ...rest } = this.props;
-
-    return (
-      <Group {...rest}>
-        <Plane
-          width={2}
-          height={0.5}
-          position={{ y: 1 }}
-          onPointerHold={onPointerHold}
-          color="transparent"
-        />
-        <Text alignment="center" fontSize={0.2}>
-          {" "}
-          {children}{" "}
-        </Text>
-      </Group>
-    );
-  }
-}
 
 class VideoThumbnail extends Component {
   render() {
@@ -59,64 +40,60 @@ class VideoThumbnail extends Component {
   }
 }
 
-const itemWidth = 3.45;
-const itemHeight = 1.66;
-const spacing = 0.5;
+const ITEM_WIDTH = 3.45;
+const ITEM_HEIGHT = 1.66;
+const ITEM_SPACING = 0.5;
 
 export default class VideoScene extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.renderGridItem = this.renderGridItem.bind(this);
-    this.renderCurrentVideo = this.renderCurrentVideo.bind(this);
-    this.closeVideo = this.closeVideo.bind(this);
-  }
+  state = {
+    currentVideo: null,
+  };
 
   handleVideoSelected(video) {
     this.setState({ currentVideo: video });
   }
 
-  closeVideo() {
-    this.setState({ currentVideo: null });
-  }
+  handleGoHome = () => {
+    this.props.onChangeScene('home');
+  };
 
-  renderCurrentVideo() {
+  closeVideo = () => {
+    this.setState({ currentVideo: null });
+  };
+
+  renderCurrentVideo = () => {
     return (
       <Group>
         <Video360 src={this.state.currentVideo.src} />
-        <Button
-          position={{ z: -2, y: -1.5, x: -0.5 }}
-          onPointerHold={this.closeVideo}
-        >
+        <Button position={{ z: -2, y: -1.5, x: -0.5 }} onPointerHold={this.closeVideo}>
           Close
         </Button>
       </Group>
     );
-  }
+  };
 
-  renderGridItem(video, index) {
-    const position = { x: index * (itemWidth + spacing) };
+  renderGridItem = (video, index) => {
+    const position = { x: index * (ITEM_WIDTH + ITEM_SPACING) };
     const onPointerHold = this.handleVideoSelected.bind(this, video);
 
     return (
       <VideoThumbnail
         key={video.src}
         position={position}
-        width={itemWidth}
-        height={itemHeight}
+        width={ITEM_WIDTH}
+        height={ITEM_HEIGHT}
         src={video.thumbnail}
         onPointerHold={onPointerHold}
       />
     );
-  }
+  };
 
   renderGrid() {
-    const totalWidth = (VIDEOS.length - 1) * (itemWidth + spacing) - spacing;
-    const x = -0.5 * totalWidth;
+    const totalWidth = (VIDEOS.length - 1) * (ITEM_WIDTH + ITEM_SPACING);
+    const x = totalWidth * -1;
     return (
       <Group>
-        <Floor position={{ y: -4 }} color="#111" reflectivity={0.1} />
-        <Group scale={2} position={{ x, y: 3, z: -20 }}>
+        <Group scale={2} position={{ x, y: 3, z: -15 }}>
           {VIDEOS.map(this.renderGridItem)}
         </Group>
       </Group>
@@ -126,9 +103,9 @@ export default class VideoScene extends Component {
   render() {
     return (
       <VRView style={{ flex: 1 }} pointer>
-        {this.state.currentVideo
-          ? this.renderCurrentVideo()
-          : this.renderGrid()}
+        <Sphere radius={80} color="red" textureSrc={TEXTURES.SKY} isDoubleSided />
+        <HomeButton position={{ z: -3, y: -3 }} onSelect={this.handleGoHome} />
+        {this.state.currentVideo ? this.renderCurrentVideo() : this.renderGrid()}
       </VRView>
     );
   }

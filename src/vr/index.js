@@ -39,6 +39,8 @@ const ShapeProps = {
   ...PointableProps,
   color: ColorPropType,
   textureSrc: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  cullMode: PropTypes.oneOf(['front', 'back']),
+  isDoubleSided: PropTypes.bool,
 };
 // ------------------------------------------------------------------------------------------
 

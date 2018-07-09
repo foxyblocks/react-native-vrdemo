@@ -34,6 +34,33 @@ class VRShapeView : UIView {
     }
   }
   
+  var cullMode : SCNCullMode {
+    get {
+      if(colorMaterial != nil) {
+        return colorMaterial!.cullMode;
+      } else {
+        return SCNCullMode.back;
+      }
+    }
+    set {
+      colorMaterial?.cullMode = newValue
+    }
+  }
+  
+  var isDoubleSided : Bool {
+    get {
+      if(colorMaterial != nil) {
+        return colorMaterial!.isDoubleSided;
+      } else {
+        return false;
+      }
+    }
+    set {
+      colorMaterial?.isDoubleSided = newValue
+    }
+  }
+  
+  
   override init(frame: CGRect) {
     super.init(frame: frame)
     
