@@ -12,7 +12,7 @@ This is an experimental project that wraps native 3D APIs with react native comp
 
 1.  clone the project
 
-2.  install dependencies `npm install`
+2.  install dependencies `yarn install`
 3.  Open `ios/VRDemo.xcodeproj` in xcode and run on either simulator or device.
 
 The simulator allows you to mouse drag on the view to simulate head movement.
