@@ -29,14 +29,14 @@ The root view of a VR scene. All other components should be nested inside the VR
 
 Whether or not to show the interactivity pointer. Default is false.
 
+![pointer](https://file-tiqxgiegnu.now.sh/)
+
 #### `devBar : boolean`
 
 Whether or not to show the developer bar at the bottom of the VR view.
 Currently this only has a single button which will allow you to turn on the camera of the
 iOS device so you can see the real world while in VR. (currently only works with a real device
 not the simulator)
-
-![](https://file-tiqxgiegnu.now.sh/)
 
 ## `<Group>`
 
@@ -81,7 +81,7 @@ Example:
 
 ## Shapes
 
-Shapes include all geometry and text components. Each shape has it's on specific props but they all share some set of common props.
+Shapes include all geometry and text components. Each shape has it's own specific props but they all share some set of common props.
 
 The shape components include
 
@@ -92,6 +92,14 @@ The shape components include
 - `Text`
 
 ### Properties
+
+Shape components also accept all the properties for `<Group />`.
+
+- `position`
+- `rotation`
+- `scale`
+
+...as well as the following:
 
 #### `textureSrc : string`
 
@@ -113,8 +121,6 @@ Color of the shape
 #### `onPointerHold : function`
 
 When the is enabled, and the user points at a shape, a progress bar on the pointer starts to fill. After it fills, this callback is triggered.
-
-Shape components also accept all the properties for groups. `position`, `rotation`, and `scale`
 
 ## `<Box />`
 
@@ -152,7 +158,7 @@ A shape component that render 2d text. Accepts all the shape properties as well 
 - `truncation: string(none|left|right|middle)`
 - `alignment: string(natural|left|right|center|justified)`
 
-# Presentation
+# IRL
 
 A clip from the original demonstration at Instacart HQ. Sorry the video is not longer, this is all that survived.
 
