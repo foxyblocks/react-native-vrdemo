@@ -6,7 +6,7 @@ This is an experimental project that wraps native 3D APIs with react native comp
 
 - Currently iOS only (depends on the [SceneKit](https://developer.apple.com/reference/scenekit) framework)
 
-This project is incomplete, and likely won't be developed any further since the release of the official [React VR](https://facebook.github.io/react-360/) from facebook.
+**NOTE** This project is incomplete, and [highly experimental](https://media.giphy.com/media/xDQ3Oql1BN54c/giphy.gif).
 
 ## Running the project
 
