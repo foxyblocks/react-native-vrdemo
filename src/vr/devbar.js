@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { Group, Text, Plane } from './index';
+import React, { Component } from "react";
+import { Group, Text, Plane } from "./index";
 
 export default class Devbar extends Component {
   render() {
-    const text = this.props.showingCamera ? 'Hide Camera' : 'Show Camera';
+    const text = this.props.showingCamera ? "Hide Camera" : "Show Camera";
     return (
-      <Group position={{ z: 0, y: -2, x: 1 }} rotation={{ x: -45, y: -90 }} >
+      <Group position={{ z: 0, y: -2, x: 1 }} rotation={{ x: -45, y: -90 }}>
         <Plane
           width={2}
           height={0.5}

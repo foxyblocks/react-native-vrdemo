@@ -4,20 +4,19 @@ This is an experimental project that wraps native 3D APIs with react native comp
 
 - Currently iOS only (depends on the [SceneKit](https://developer.apple.com/reference/scenekit) framework)
 
-This project is incomplete, and likely won't be developed any futher since the release of the official [React VR](https://facebook.github.io/react-360/) from facebook.
-
+This project is incomplete, and likely won't be developed any further since the release of the official [React VR](https://facebook.github.io/react-360/) from facebook.
 
 ## Running the project
 
-1. clone the project 
+1.  clone the project
 
-2. install dependencies `npm install`
-3. Open `ios/VRDemo.xcodeproj` in xcode and run on either simulator or device.
-
+2.  install dependencies `npm install`
+3.  Open `ios/VRDemo.xcodeproj` in xcode and run on either simulator or device.
 
 The simulator allows you to mouse drag on the view to simulate head movement.
 
 ## Components
+
 ## `<VRView>`
 
 The root view of a VR scene. All other components should be nested inside the VR view. This view can be positioned with flexbox like any other react native view.
@@ -25,27 +24,32 @@ The root view of a VR scene. All other components should be nested inside the VR
 ### Properties
 
 #### `pointer : boolean`
-Wheather or not to show the interactivity pointer. Default is false.
+
+Whether or not to show the interactivity pointer. Default is false.
+
+![](https://file-tiqxgiegnu.now.sh/)
 
 ## `<Group>`
+
 Groups a set of components and controls their positioning, rotation, and scale
 
 ### Properties
 
-#### `position : object{x : number, y : number, z: number}` 
+#### `position : object{x : number, y : number, z: number}`
+
 Position of the group in 3D space. Any axis can be left out and will be defaulted to 0.
-Example: 
-	
+Example:
+
 ```javascript
-<Group position={{x: 1}} />` 
+<Group position={{x: 1}} />`
 
 <Group position={{x: 1, y: 1, z: -1}} />
 ```
-	
-#### `rotation : object{x : number, y : number, z: number}` 
+
+#### `rotation : object{x : number, y : number, z: number}`
+
 Rotation of the group around the x, y and z axes. Values should be specified as a number in degrees. Any axis can be left out and will be defaulted to 0.
-	
-Example: 
+Example:
 
 ```javascript
 <Group rotation={{ x: 180 }} />
@@ -53,20 +57,21 @@ Example:
 <Group rotation={{ y: -180, z: 45 }} />
 ```
 
-#### `scale : object{x : number, y : number, z: number} | number` 
+#### `scale : object{x : number, y : number, z: number} | number`
+
 Scale of the group in each of the x, y and z axes. Can be an object of each axis or a number that should apply to all axes. Any axis can be left out and will be defaulted to 1.
-	
-Example: 
+Example:
 
 ```javascript
-<Group scale={{ x: 2 }} /> 
+<Group scale={{ x: 2 }} />
 // scales "2" in the x axis and "1" in the y and z axes
 
 <Group scale={4} />
-// scales the group by 4 in three axes 
+// scales the group by 4 in three axes
 ```
 
 ## Shapes
+
 Shapes include all geometry and text components. Each shape has it's on specific props but they all share some set of common props.
 
 The shape components include
@@ -79,14 +84,17 @@ The shape components include
 
 ### Properties
 
-#### `textureSrc : string` 
+#### `textureSrc : string`
+
 URL for the texture to apply to the shape
 
-#### `color : string` 
+#### `color : string`
+
 Color of the shape
 
-#### `onPointerHold : function` 
-When the pointer is enabled, and the user points at a shape, a progress bar on the pointer starts to fill. After it fills, this callback is triggered.
+#### `onPointerHold : function`
+
+When the is enabled, and the user points at a shape, a progress bar on the pointer starts to fill. After it fills, this callback is triggered.
 
 Shape components also accept all the properties for groups. `position`, `rotation`, and `scale`
 
@@ -124,7 +132,7 @@ A shape component that render 2d text. Accepts all the shape properties as well 
 - `value: string` String for the text
 - `fontSize: number` Size of the text
 - `truncation: string(none|left|right|middle)`
-- `alignment: string(natrual|left|right|center|justified)`
+- `alignment: string(natural|left|right|center|justified)`
 
 # Presentation
 

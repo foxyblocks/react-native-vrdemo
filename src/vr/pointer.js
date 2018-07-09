@@ -1,6 +1,6 @@
 import { compact } from 'lodash';
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Easing } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 export default class Pointer extends Component {
@@ -12,14 +12,14 @@ export default class Pointer extends Component {
   }
 
   startAnimating() {
-    this.circles.forEach((circle) => {
-      circle.performLinearAnimation(100, 1000);
+    this.circles.forEach(circle => {
+      circle.animate(100, 1000, Easing.linear);
     });
   }
 
   reset() {
-    this.circles.forEach((circle) => {
-      circle.performLinearAnimation(0, 350);
+    this.circles.forEach(circle => {
+      circle.animate(0, 350, Easing.linear);
     });
   }
 
@@ -58,7 +58,7 @@ export default class Pointer extends Component {
       marginLeft: eyeOffset,
     };
 
-    const circleRef = (c) => {
+    const circleRef = c => {
       this.circles = compact(this.circles.concat(c));
     };
 
@@ -70,7 +70,6 @@ export default class Pointer extends Component {
       tintColor: 'white',
       style: circleStyle,
     };
-
 
     return (
       <View style={container} pointerEvents="none">

@@ -1,5 +1,7 @@
 import { pick, omit } from 'lodash';
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
+import resolveAssetSrc from 'react-native/Libraries/Image/resolveAssetSource';
+import PropTypes from 'prop-types';
 import { requireNativeComponent, ColorPropType, View } from 'react-native';
 import Pointer from './pointer';
 import Devbar from './devbar';
@@ -36,9 +38,11 @@ const PointableProps = {
 const ShapeProps = {
   ...PointableProps,
   color: ColorPropType,
-  textureSrc: PropTypes.string,
+  textureSrc: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 // ------------------------------------------------------------------------------------------
+
+const resolveAsset = asset => (typeof asset === 'number' ? resolveAssetSrc(asset).uri : asset);
 
 export class VRView extends Component {
   constructor(props) {
@@ -81,25 +85,30 @@ export class VRView extends Component {
   }
 
   render() {
-    const { children, ...rest } = this.props;
+    const { children, bgSrc, ...rest } = this.props;
     const { showingCamera } = this.state;
 
     const passedProps = {
       ...rest,
+      bgSrc: resolveAsset(bgSrc),
       showRealWorld: showingCamera,
     };
 
     return (
       <View style={{ flex: 1 }}>
         <VRViewNative {...passedProps}>
-          { this.props.devBar ?
+          {this.props.devBar ? (
             <Devbar showingCamera={showingCamera} onToggleCamera={this.handleToggleCamera} />
-          : null}
-          { children }
+          ) : null}
+          {children}
         </VRViewNative>
-        { this.props.pointer ?
-          <Pointer ref={(c) => { this.pointer = c; }} />
-        : null }
+        {this.props.pointer ? (
+          <Pointer
+            ref={c => {
+              this.pointer = c;
+            }}
+          />
+        ) : null}
       </View>
     );
   }
@@ -107,7 +116,7 @@ export class VRView extends Component {
 VRView.propTypes = {
   showRealWorld: PropTypes.bool,
   bgColor: ColorPropType,
-  bgSrc: PropTypes.string,
+  bgSrc: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   devBar: PropTypes.bool,
   pointer: PropTypes.bool,
   children: PropTypes.node.isRequired,
@@ -124,9 +133,8 @@ VRView.childContextTypes = {
   endPointer: PropTypes.func,
 };
 
-const convertScale = value => (
-  (typeof value === 'number') ? { x: value, y: value, z: value } : value
-);
+const convertScale = value =>
+  typeof value === 'number' ? { x: value, y: value, z: value } : value;
 
 export class Group extends Component {
   render() {
@@ -157,8 +165,7 @@ Group.defaultProps = {
   onHitEnd: () => {},
 };
 
-
-const withGroup = (Wrapped) => {
+const withGroup = Wrapped => {
   class Grouped extends Component {
     constructor(props) {
       super(props);
@@ -209,7 +216,10 @@ const withGroup = (Wrapped) => {
           onHitStart={this.handleHitStart}
           onHitEnd={this.handleHitEnd}
         >
-          <Wrapped {...omit(this.props, groupProps)} />
+          <Wrapped
+            {...omit(this.props, groupProps)}
+            textureSrc={resolveAsset(this.props.textureSrc)}
+          />
         </Group>
       );
     }
@@ -219,8 +229,7 @@ const withGroup = (Wrapped) => {
     ...PointableProps,
   };
 
-  Grouped.defaultProps = {
-  };
+  Grouped.defaultProps = {};
 
   Grouped.contextTypes = {
     startPointer: PropTypes.func,
@@ -292,10 +301,7 @@ Text.propTypes = {
   fontSize: PropTypes.number,
   truncation: PropTypes.oneOf(['none', 'start', 'middle', 'end']),
   alignment: PropTypes.oneOf(['left', 'right', 'center', 'justified', 'natural']),
-  children: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.arrayOf(PropTypes.string),
-  ]),
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
 };
 
 export const Video360 = props => <Video360Native {...props} />;
@@ -314,4 +320,3 @@ const BoxNative = requireNativeComponent('VRBoxView', Box);
 const FloorNative = requireNativeComponent('VRFloorView', Floor);
 const TextNative = requireNativeComponent('VRTextView', Text);
 const Video360Native = requireNativeComponent('VRVideo360View', Video360);
-
