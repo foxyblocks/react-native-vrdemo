@@ -1,5 +1,5 @@
 import React from 'react';
-import { Group, Plane } from '../vr';
+import { Group, Plane } from '../../src/vr';
 import Button from './button';
 import { HOME_ICON } from '../lib/textures';
 

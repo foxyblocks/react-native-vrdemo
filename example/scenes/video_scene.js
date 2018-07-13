@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VRView, Video360, Group, Plane, Floor, Text, Sphere } from '../vr';
+import { VRView, Video360, Group, Plane, Floor, Text, Sphere } from '../../src/vr';
 import * as TEXTURES from '../lib/textures';
 import Button from '../components/button';
 import HomeButton from '../components/home_button';

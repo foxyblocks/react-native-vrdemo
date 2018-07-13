@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { VRView, Group, Sphere, Plane } from '../vr';
+import { VRView, Group, Sphere, Plane } from '../../src/vr';
 import * as TEXTURES from '../lib/textures';
 import Button from '../components/button';
 import Planet from '../components/planet';

@@ -19,9 +19,29 @@ The simulator allows you to mouse drag on the view to simulate head movement.
 
 ## To run on device
 
-1. open `ios/reactnativevr.xcodeproj` and select your usb connected iOS device to run on. For more details on how to do this follow [this tutorial](https://code.tutsplus.com/tutorials/ios-from-scratch-with-swift-how-to-test-an-ios-application-on-a-device--cms-25156) starting at Step 3.
+1.  open `ios/reactnativevr.xcodeproj` and select your usb connected iOS device to run on. For more details on how to do this follow [this tutorial](https://code.tutsplus.com/tutorials/ios-from-scratch-with-swift-how-to-test-an-ios-application-on-a-device--cms-25156) starting at Step 3.
 
-## Components
+## Demo Scenes
+
+In the `examples` directory there are some basic scenes that demonstrate the library.
+
+### Space Textures
+
+[`example/scenes/space_scene.js`](example/scenes/space_scene.js)
+
+Demonstrates creating and positioning geometry, adding textures, and adding simple animations.
+
+![](https://file-hpjnudfxdp.now.sh/)
+
+### 360 Video Gallery
+
+[`example/scenes/video_scene.js`](example/scenes/video_scene.js)
+
+Demonstrates a VR menu that links to 360 degree videos.
+
+![](https://file-jrejedlhka.now.sh)
+
+## Component
 
 ## `<VRView>`
 

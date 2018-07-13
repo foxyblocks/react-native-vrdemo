@@ -1,3 +1,3 @@
 import { AppRegistry } from 'react-native';
-import AppView from './src/app_view';
-AppRegistry.registerComponent('reactnativevr', () => AppView);
+import App from './example/app';
+AppRegistry.registerComponent('reactnativevr', () => App);

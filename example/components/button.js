@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Group, Plane, Text } from '../vr';
+import { Group, Plane, Text } from '../../src/vr';
 
 export default class Button extends React.Component {
   static propTypes = {

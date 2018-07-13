@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Sphere } from '../vr';
+import PropTypes from 'prop-types';
 import { Spring } from 'react-spring/dist/native';
 import { TimingAnimation, Easing } from 'react-spring/dist/addons';
+import { Sphere } from '../../src/vr';
 
 export default class Planet extends React.PureComponent {
   static propTypes = {
