@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Group, Text, Plane } from './';
+import { Group, Text, Plane } from './index';
 
 export default class Devbar extends Component {
   render() {
