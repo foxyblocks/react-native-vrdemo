@@ -21,6 +21,7 @@
     "prop-types": "^15.6.2",
     "react": "16.3.1",
     "react-native": "~0.55.2",
-    "react-native-circular-progress": "^1.0.0"
+    "react-native-circular-progress": "^1.0.0",
+    "react-spring": "^5.4.0"
   }
 }
